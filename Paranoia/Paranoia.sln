@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paranoia", "Paranoia\Paranoia.csproj", "{EE3EA7BE-D65B-4767-B23C-D4CFD1D0F1B8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		SceernSaver|Any CPU = SceernSaver|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EE3EA7BE-D65B-4767-B23C-D4CFD1D0F1B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE3EA7BE-D65B-4767-B23C-D4CFD1D0F1B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE3EA7BE-D65B-4767-B23C-D4CFD1D0F1B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE3EA7BE-D65B-4767-B23C-D4CFD1D0F1B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE3EA7BE-D65B-4767-B23C-D4CFD1D0F1B8}.SceernSaver|Any CPU.ActiveCfg = SceernSaver|Any CPU
+		{EE3EA7BE-D65B-4767-B23C-D4CFD1D0F1B8}.SceernSaver|Any CPU.Build.0 = SceernSaver|Any CPU
+		{EE3EA7BE-D65B-4767-B23C-D4CFD1D0F1B8}.SceernSaver|Any CPU.Deploy.0 = SceernSaver|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
