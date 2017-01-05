@@ -1,0 +1,44 @@
+﻿<Window x:Class="Paranoia.ConfigIt"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Paranoia"
+        mc:Ignorable="d"
+        Title="Configuration" Height="302" Width="300" ResizeMode="NoResize" Loaded="Window_Loaded" Closing="Window_Closing" Icon="eye.ico">
+    <Grid x:Name="gridConfig">
+        <StackPanel x:Name="spConfig" Visibility="Collapsed" Panel.ZIndex="1" Background="Black">
+            <GroupBox x:Name="gbDisplay" Header="Display" Foreground="White" Margin="10,5" Padding="10">
+                <CheckBox x:Name="cbRetro" Foreground="White" IsChecked="True" Background="Black" ToolTip="Toggle the retro look.">Enable CRT scanline animation</CheckBox>
+            </GroupBox>
+            <GroupBox x:Name="gbPath" Header="Path" Foreground="White" Margin="10,0,10,5" Padding="10">
+                <StackPanel>
+                    <RadioButton x:Name="rbScripted" GroupName="rbgPath" Margin="0,0,0,8" Foreground="White" Background="Black" IsChecked="True" ToolTip="Use the scripted path for eye movement.">Scripted</RadioButton>
+                    <RadioButton x:Name="rbRandom" GroupName="rbgPath" Margin="0,0,0,8" Foreground="White" Background="Black" ToolTip="Eye path is random.">Random</RadioButton>
+                    <RadioButton x:Name="rbCustom" GroupName="rbgPath" IsEnabled="False" Background="Black">Custom</RadioButton>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox x:Name="gbVoice" Header="Voice" Foreground="White" Margin="10,0,10,5" Padding="10">
+                <StackPanel Orientation="Vertical">
+                    <CheckBox x:Name="cbTalk" IsChecked="True" Margin="0,0,0,8" Foreground="White" Background="Black" ToolTip="Toggle speaking funciton.">Enable the Computer's voice</CheckBox>
+                    <CheckBox x:Name="cbDefault" IsChecked="True" IsEnabled="False" Background="Black" Margin="0,0,0,8">Use default voice</CheckBox>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Foreground="White" Padding="0,5,5,5" Margin="0,0,10,0" ToolTip="Speech frequency in seconds.">Frequency:</Label>
+                        <Slider x:Name="sdFrequency" Orientation="Horizontal" Value="60" Minimum="30" Maximum="300" SmallChange="10" LargeChange="30" Background="Black" Foreground="White" AutoToolTipPlacement="BottomRight" TickPlacement="BottomRight" Margin="0" ToolTip="Speech frequency in seconds." HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" MinWidth="170"  />
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+        <StackPanel x:Name="spAll" Visibility="Visible" Panel.ZIndex="0">
+            <Button x:Name="btnInfrared"    Content="Infrared"      VerticalAlignment="Top" HorizontalContentAlignment="Center" UseLayoutRounding="False" Background="White"        Foreground="White"          BorderThickness="0" FontSize="20" Padding="0" Margin="0" Click="btnInfrared_Click"/>
+            <Button x:Name="btnRed"         Content="Red"           VerticalAlignment="Top" HorizontalContentAlignment="Center" UseLayoutRounding="False" Background="Red"          Foreground="Red"            BorderThickness="0" FontSize="20" Padding="0" Margin="0" Click="btnRed_Click"/>
+            <Button x:Name="btnOrange"      Content="Orange"        VerticalAlignment="Top" HorizontalContentAlignment="Center" UseLayoutRounding="False" Background="Orange"       Foreground="Orange"         BorderThickness="0" FontSize="20" Padding="0" Margin="0" Click="btnOrange_Click"/>
+            <Button x:Name="btnYellow"      Content="Yellow"        VerticalAlignment="Top" HorizontalContentAlignment="Center" UseLayoutRounding="False" Background="Yellow"       Foreground="Yellow"         BorderThickness="0" FontSize="20" Padding="0" Margin="0" Click="btnYellow_Click"/>
+            <Button x:Name="btnGreen"       Content="Green"         VerticalAlignment="Top" HorizontalContentAlignment="Center" UseLayoutRounding="False" Background="Green"        Foreground="Green"          BorderThickness="0" FontSize="20" Padding="0" Margin="0" Click="btnGreen_Click"/>
+            <Button x:Name="btnBlue"        Content="Blue"          VerticalAlignment="Top" HorizontalContentAlignment="Center" UseLayoutRounding="False" Background="Blue"         Foreground="Blue"           BorderThickness="0" FontSize="20" Padding="0" Margin="0" Click="btnBlue_Click"/>
+            <Button x:Name="btnIndigo"      Content="Indigo"        VerticalAlignment="Top" HorizontalContentAlignment="Center" UseLayoutRounding="False" Background="Indigo"       Foreground="Indigo"         BorderThickness="0" FontSize="20" Padding="0" Margin="0" Click="btnIndigo_Click"/>
+            <Button x:Name="btnPurple"      Content="Purple"        VerticalAlignment="Top" HorizontalContentAlignment="Center" UseLayoutRounding="False" Background="MidnightBlue" Foreground="MidnightBlue"   BorderThickness="0" FontSize="20" Padding="0" Margin="0" Click="btnPurple_Click"/>
+            <Button x:Name="btnUltraviolet" Content="Ultraviolet"   VerticalAlignment="Top" HorizontalContentAlignment="Center" UseLayoutRounding="False" Background="Black"        Foreground="Black"          BorderThickness="0" FontSize="20" Padding="0" Margin="0" Click="btnUltraviolet_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
