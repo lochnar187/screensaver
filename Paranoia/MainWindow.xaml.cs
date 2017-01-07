@@ -19,41 +19,78 @@ namespace Paranoia {
         private Boolean boolUseDefaultVoice;
         private Boolean boolRandomMoves;
         private Boolean boolRetroLook;
+        private Boolean boolStillOnly;
         private Boolean boolAnimationInProgress = false;
         private int intAnimationControl = 0;
         private int intTalkativeness;
         private int intCenterX = 0;
         private int intCenterY = 0;
+        private double dblScaleEye;
         private double dblScreenWidth;
         private double dblScreenHeight;
+        private double dblScaleFactorWidth;
+        private double dblScaleFactorHeight;
         private SpeechSynthesizer ssTheComputer = new SpeechSynthesizer();
         private DispatcherTimer dtPuppetMaster = new DispatcherTimer();
         private Stopwatch swTimeSinceLastSpeech = new Stopwatch();
+        private Random ranGenerator = new Random();
 
         public MainWindow() {
             InitializeComponent();
         } // End public MainWindow()
 
         private void Window_Loaded(object sender, RoutedEventArgs e) {
+            // Load setting, adjust eye display, scale it to local screen resolution, animate scanlines,
+            // kill the mouse pointer, and start the puppet master timer...WRG
             RegDefs rdSource = new RegDefs();
-            double dblImageTop, dblImageLeft;
 
-            if (rdSource.LoadSettings(out boolRetroLook, out boolRandomMoves, out boolAllowTalking, out boolUseDefaultVoice, out intTalkativeness)) {
-
+            if (rdSource.LoadSettings(out boolStillOnly, out boolRetroLook, out boolRandomMoves, out boolAllowTalking, out boolUseDefaultVoice, out intTalkativeness, out dblScaleEye)) {
                 dblScreenWidth = this.MainGrid.RenderSize.Width;
                 dblScreenHeight = this.MainGrid.RenderSize.Height;
 
-                // Look at this more, I don't like it...WRG
-                dblImageTop = (dblScreenHeight / 2) - 672; // -172 + 1024 -172 = 680
-                dblImageLeft = (dblScreenWidth / 2) - 672; // 128 + 1024 + 128 = 1280
-
                 // Center the eye images on the screen...WRG
-                Canvas.SetLeft(iris, dblImageLeft);
-                Canvas.SetTop(iris, dblImageTop);
-                Canvas.SetLeft(pupil, dblImageLeft);
-                Canvas.SetTop(pupil, dblImageTop);
-                Canvas.SetLeft(shine, dblImageLeft);
-                Canvas.SetTop(shine, dblImageTop);
+                Canvas.SetLeft(iris, (dblScreenWidth / 2) - (iris.RenderSize.Width / 2));
+                Canvas.SetTop(iris, (dblScreenHeight / 2) - (iris.RenderSize.Height / 2));
+                Canvas.SetLeft(pupil, (dblScreenWidth / 2) - (pupil.RenderSize.Width / 2));
+                Canvas.SetTop(pupil, (dblScreenHeight / 2) - (pupil.RenderSize.Height / 2));
+                Canvas.SetLeft(shine, (dblScreenWidth / 2) - (shine.RenderSize.Width / 2));
+                Canvas.SetTop(shine, (dblScreenHeight / 2) - (shine.RenderSize.Height / 2));
+
+                // Scale the eye.  Resolution of the concept images are 1024x1024 but they render at 1345x1345
+                // on my test box which has a screen resolution of 1600x900.  This gives the effect I want, an
+                // eye taking up most of the screen.  Now I need to make that scale...WRG
+                dblScaleFactorWidth = (dblScreenWidth / 1600) * (dblScaleEye / 100);
+                dblScaleFactorHeight = (dblScreenHeight / 900) * (dblScaleEye / 100);
+
+                if (((dblScaleFactorHeight > 1.01) || (dblScaleFactorHeight < 0.99)) || ((dblScaleFactorWidth > 1.01) || (dblScaleFactorWidth < 0.99))) {
+                    // Apply eye scale...WRG
+                    Storyboard sbMoves = new Storyboard();
+
+                    ScaleTransform scale = new ScaleTransform(1.0, 1.0);
+                    eye.RenderTransformOrigin = new Point(0.5, 0.5);
+                    eye.RenderTransform = scale;
+
+                    DoubleAnimation daScaleX = new DoubleAnimation();
+                    daScaleX.Duration = new Duration(TimeSpan.FromMilliseconds(1));
+                    daScaleX.From = 1;
+                    daScaleX.To = dblScaleFactorHeight;
+                    sbMoves.Children.Add(daScaleX);
+
+                    Storyboard.SetTargetProperty(daScaleX, new PropertyPath("RenderTransform.ScaleX"));
+                    Storyboard.SetTarget(daScaleX, eye);
+
+                    DoubleAnimation daScaleY = new DoubleAnimation();
+                    daScaleY.Duration = new Duration(TimeSpan.FromMilliseconds(1));
+                    daScaleY.From = 1;
+                    daScaleY.To = dblScaleFactorHeight;
+                    sbMoves.Children.Add(daScaleY);
+
+                    Storyboard.SetTargetProperty(daScaleY, new PropertyPath("RenderTransform.ScaleY"));
+                    Storyboard.SetTarget(daScaleY, eye);
+
+                    sbMoves.Begin();
+
+                } // End if (((dblScaleFactorHeight > 1.01) || (dblScaleFactorHeight < 0.99)) || ((dblScaleFactorWidth > 1.01) || (dblScaleFactorWidth < 0.99)))
 
                 // Start retro animation...WRG
                 animateScanlines();
@@ -66,7 +103,8 @@ namespace Paranoia {
                 dtPuppetMaster.Interval = new TimeSpan(0, 0, 1);
                 dtPuppetMaster.Start();
 
-            } else { 
+            } else {
+                MessageBox.Show("Failed to load setting.");
                 killIt();
             } // End if (rdSource.LoadSettings(out boolRetroLook, out boolRandomMoves, out boolAllowTalking, out boolUseDefaultVoice, out intTalkativeness))
 
@@ -88,14 +126,41 @@ namespace Paranoia {
             killIt();
         } // End private void Window_StylusDown(object sender, StylusDownEventArgs e)
 
+        private void msgText_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e) {
+            // Scroll the text if visible...WRG
+            if (msgText.Visibility == Visibility.Visible) {
+                Storyboard sbMoves = new Storyboard();
+
+                TranslateTransform trans = new TranslateTransform();
+                message.RenderTransformOrigin = new Point(0, 0);
+                message.RenderTransform = trans;
+
+                DoubleAnimation daXAxis = new DoubleAnimation();
+                daXAxis.Duration = new Duration(TimeSpan.FromSeconds(10));
+                daXAxis.To = (dblScreenWidth * -1);
+                daXAxis.From = dblScreenWidth;
+                daXAxis.Completed += new EventHandler(textAnimation_Completed);
+                sbMoves.Children.Add(daXAxis);
+
+                Storyboard.SetTargetProperty(daXAxis, new PropertyPath("RenderTransform.X"));
+                Storyboard.SetTarget(daXAxis, message);
+
+                sbMoves.Begin();
+            } // End if (msgText.Visibility == Visibility.Visible)
+        } // End private void msgText_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+
         private void dispatcherTimer_Tick(object sender, EventArgs e) {
             // On each tick run a little animation if no other animation is running...WRG
             if (!boolAnimationInProgress) {
-                if (boolRandomMoves) {
-                    RandomMoves();
+                if (boolStillOnly) {
+                    MostlyStill();
                 } else {
-                    ScriptedMoves();
-                } // End if (boolRandomMoves)
+                    if (boolRandomMoves) {
+                        RandomMoves();
+                    } else {
+                        ScriptedMoves();
+                    } // End if (boolRandomMoves)
+                } // End if (boolStillOnly)
             } // End  if (!boolAnimationInProgress)
         } // End private void dispatcherTimer_Tick(object sender, EventArgs e)
 
@@ -104,9 +169,36 @@ namespace Paranoia {
             //Console.WriteLine("movementAnimation_Completed, next is case #" + intAnimationControl.ToString());
         } // End private void myanim_Completed(object sender, EventArgs e)
 
+        private void textAnimation_Completed(object sender, EventArgs e) {
+            msgText.Visibility = Visibility.Hidden;
+        } // End private void myanim_Completed(object sender, EventArgs e)
+
+        private void MostlyStill() {
+            int intNextAnimationType = ranGenerator.Next(1, 51); // Upper bound is exclusive so, this gives an int between 1 and 50...WRG
+
+            switch (intNextAnimationType) {
+                case 1:
+                case 2:
+                    animateDilate(0.9);
+                    break;
+                case 3:
+                    animateDilate(1.15);
+                    break;
+                case 4:
+                    animateDilate(0.8);
+                    saySomethingButNotTooMuch();
+                    break;
+                default:
+                    intAnimationControl = -1;
+                    break;
+            } // End switch (intNextAnimationType)
+            intAnimationControl++;
+            boolAnimationInProgress = (intAnimationControl > 0);
+
+        } // End private void MostlyStill()
+
         private void RandomMoves() {
             // Move the center point of the eye to randomish locations...WRG
-            Random ranGenerator = new Random();
             int intRangeMinY = (int) ((dblScreenHeight / 2) / 10) + 50, // Keep the eye near the bottom of the screen for that iconic Paranoia look...WRG
                 intRangeMaxY = (int) ((((dblScreenHeight / 2) - dblScreenHeight) + 50) * (-1)), 
                 intNewCenterY = 0,
@@ -281,7 +373,6 @@ namespace Paranoia {
             // Don't get too talkative, limit it by time...WRG
             if ((swTimeSinceLastSpeech.IsRunning && (swTimeSinceLastSpeech.ElapsedMilliseconds > (intTalkativeness * 1000))) || (! swTimeSinceLastSpeech.IsRunning)) {
                 if (intIndex == 0) {
-                    Random ranGenerator = new Random();
                     intIndex = ranGenerator.Next(1, 12);
                 } // End if (intIndex == 0)
 
@@ -311,7 +402,7 @@ namespace Paranoia {
                         sayThis("Report to your local security officer.");
                         break;
                     case 9:
-                        sayThis("Report all trators.  Have a nice day.");
+                        sayThis("Report all traitors.  Have a nice day.");
                         break;
                     case 10:
                         sayThis("Your infraction has been noted.");
@@ -325,20 +416,25 @@ namespace Paranoia {
         } // End private void saySomethingButNotTooMuch(int intIndex = 0)
 
         private void sayThis(String strThis) {
-            if (boolAllowTalking) {
-                try {
-                    swTimeSinceLastSpeech.Restart();
-                    ssTheComputer.SpeakAsync(strThis);
-                } catch (Exception e) {
-                    MessageBox.Show(e.Message);
-                    //Console.WriteLine(e.Message);
-                }
-            } // End if (boolAllowTalking)
+            try {
+                swTimeSinceLastSpeech.Restart();
+                if (boolAllowTalking) {
+                    try {
+                        ssTheComputer.SpeakAsync(strThis);
+                    } catch (Exception e) {
+                        MessageBox.Show("SpeakAsync Error: " + e.Message);
+                    } // End try
+                } // End if (boolAllowTalking)
+                msgText.Text = strThis;
+                msgText.Visibility = Visibility.Visible;
+            } catch (Exception e) {
+                MessageBox.Show("Speech Error: " + e.Message);
+                //Console.WriteLine(e.Message);
+            } // End try
         } // End private void sayThis(String strThis)
 
         private void killIt() {
             // Kill the app but first, kill any SpeechSynthesizer process...WRG
-
             if (ssTheComputer.State != SynthesizerState.Ready) {
                 ssTheComputer.SpeakAsyncCancelAll();
                 // Pause to make sure SpeechSynthesizer is killed off...WRG
@@ -354,7 +450,7 @@ namespace Paranoia {
             if (boolRetroLook) {
                 Storyboard sbMoves = new Storyboard();
 
-                TranslateTransform trans = new TranslateTransform(100,100);
+                TranslateTransform trans = new TranslateTransform(100, 100);
                 scanlines.RenderTransformOrigin = new Point(0, 0);
                 scanlines.RenderTransform = trans;
 
@@ -413,9 +509,33 @@ namespace Paranoia {
             // Move the eye to intPosX, intPosY location in intDuration milliseconds...WRG
             Storyboard sbMoves = new Storyboard();
 
+            TransformGroup renderGroup = new TransformGroup();
             TranslateTransform trans = new TranslateTransform();
-            eye.RenderTransformOrigin = new Point(0, 0);
-            eye.RenderTransform = trans;
+            ScaleTransform scale = new ScaleTransform(1.0, 1.0);
+
+            renderGroup.Children.Add(scale);
+            renderGroup.Children.Add(trans);
+
+            eye.RenderTransformOrigin = new Point(0.5, 0.5);
+            eye.RenderTransform = renderGroup;
+
+            DoubleAnimation daScaleX = new DoubleAnimation();
+            daScaleX.Duration = new Duration(TimeSpan.FromMilliseconds(0));
+            daScaleX.From = 1;
+            daScaleX.To = dblScaleFactorHeight;
+            sbMoves.Children.Add(daScaleX);
+
+            Storyboard.SetTargetProperty(daScaleX, new PropertyPath("RenderTransform.Children[0].ScaleX"));
+            Storyboard.SetTarget(daScaleX, eye);
+
+            DoubleAnimation daScaleY = new DoubleAnimation();
+            daScaleY.Duration = new Duration(TimeSpan.FromMilliseconds(0));
+            daScaleY.From = 1;
+            daScaleY.To = dblScaleFactorHeight;
+            sbMoves.Children.Add(daScaleY);
+
+            Storyboard.SetTargetProperty(daScaleY, new PropertyPath("RenderTransform.Children[0].ScaleY"));
+            Storyboard.SetTarget(daScaleY, eye);
 
             DoubleAnimation daXAxis = new DoubleAnimation();
             daXAxis.Duration = new Duration(TimeSpan.FromMilliseconds(intDuration));
@@ -424,7 +544,7 @@ namespace Paranoia {
             daXAxis.Completed += new EventHandler(movementAnimation_Completed);
             sbMoves.Children.Add(daXAxis);
 
-            Storyboard.SetTargetProperty(daXAxis, new PropertyPath("RenderTransform.X"));
+            Storyboard.SetTargetProperty(daXAxis, new PropertyPath("RenderTransform.Children[1].X"));
             Storyboard.SetTarget(daXAxis, eye);
 
             DoubleAnimation daYAxis = new DoubleAnimation();
@@ -434,7 +554,7 @@ namespace Paranoia {
             daYAxis.Completed += new EventHandler(movementAnimation_Completed);
             sbMoves.Children.Add(daYAxis);
 
-            Storyboard.SetTargetProperty(daYAxis, new PropertyPath("RenderTransform.Y"));
+            Storyboard.SetTargetProperty(daYAxis, new PropertyPath("RenderTransform.Children[1].Y"));
             Storyboard.SetTarget(daYAxis, eye);
 
             sbMoves.Begin();

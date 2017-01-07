@@ -14,6 +14,10 @@ using Application = System.Windows.Application;
     Supports the standard three screensaver arguments, "/s" "/c" and "/p x".  If none are passed
     it will use "/c" as the default...WRG
 
+    Added two new arguments, "/r" and "/u".  Use "/r" to wipe the registry settings and enter 
+    config mode to reset them.  Use "/u" to wipe the registry settings and exit without redoing 
+    them...WRG
+
  *************************************************************************************************/
 
 namespace Paranoia {
@@ -28,13 +32,24 @@ namespace Paranoia {
             rdSource.InitRegistry();
 
             if (e.Args.Length == 0) {
+                // No args found, default to config mode...WRG
                 ConfigScreenSaver();
             } else {
                 if (e.Args[0].ToLower().StartsWith("/s")) {
+                    // Show mode...WRG
                     ShowScreenSaver();
                 } else if (e.Args[0].ToLower().StartsWith("/p")) {
+                    // Preview mode...WRG
                     PreviewScreenSaver(e);
+                } else if (e.Args[0].ToLower().StartsWith("/r")) {
+                    // Wipe registry and config...WRG
+                    rdSource.DeleteRegistry();
+                    ConfigScreenSaver();
+                } else if (e.Args[0].ToLower().StartsWith("/u")) {
+                    // Wipe registry...WRG
+                    rdSource.DeleteRegistry();
                 } else {
+                    // Config mode...WRG
                     ConfigScreenSaver();
                 } // End if (e.Args[0].ToLower().StartsWith("/s"))
             } // End if (e.Args.Length == 0)

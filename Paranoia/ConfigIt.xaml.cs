@@ -12,7 +12,9 @@ namespace Paranoia {
         public Boolean boolUseDefaultVoice;
         public Boolean boolRandomMoves;
         public Boolean boolRetroLook;
+        public Boolean boolStillOnly;
         public int intTalkativeness;
+        private double dblScaleEye;
 
         private SpeechSynthesizer ssTheComputer = new SpeechSynthesizer();
 
@@ -23,15 +25,20 @@ namespace Paranoia {
         private void Window_Loaded(object sender, RoutedEventArgs e) {
             RegDefs rdSource = new RegDefs();
 
-            if (rdSource.LoadSettings(out boolRetroLook, out boolRandomMoves, out boolAllowTalking, out boolUseDefaultVoice, out intTalkativeness)) {
+            if (rdSource.LoadSettings(out boolStillOnly, out boolRetroLook, out boolRandomMoves, out boolAllowTalking, out boolUseDefaultVoice, out intTalkativeness, out dblScaleEye)) {
                 sdFrequency.Value = intTalkativeness;
+                sdScaleEye.Value = dblScaleEye;
                 cbRetro.IsChecked = boolRetroLook;
                 cbTalk.IsChecked = boolAllowTalking;
 
-                if (boolRandomMoves) {
-                    rbRandom.IsChecked = true;
+                if (boolStillOnly) {
+                    rbStill.IsChecked = true;
                 } else {
-                    rbScripted.IsChecked = true;
+                    if (boolRandomMoves) {
+                        rbRandom.IsChecked = true;
+                    } else {
+                        rbScripted.IsChecked = true;
+                    } // End if (boolRandomMoves)
                 } // End if (boolRandomMoves)
 
                 if (boolAllowTalking) {
@@ -47,7 +54,7 @@ namespace Paranoia {
             RegDefs rdSource = new RegDefs();
 
             // Save settings then kill the app but first, kill any SpeechSynthesizer process...WRG
-            if (!rdSource.SaveSettings(cbRetro.IsChecked.Value, rbRandom.IsChecked.Value, cbTalk.IsChecked.Value, cbDefault.IsChecked.Value, (int)sdFrequency.Value)) {
+            if (!rdSource.SaveSettings(rbStill.IsChecked.Value, cbRetro.IsChecked.Value, rbRandom.IsChecked.Value, cbTalk.IsChecked.Value, cbDefault.IsChecked.Value, (int)sdFrequency.Value, (double)sdScaleEye.Value)) {
                 MessageBox.Show("Failed to save the settings.");
                 e.Cancel = true;
             } else {
@@ -125,14 +132,25 @@ namespace Paranoia {
             MessageBox.Show("You have been promoted to Troubleshooter status.  Report to Briefing Room, section R-773.2399.334.A732.p997 within 12.317 minutes, for your orders.  Thank you citizen.");
         } // End private void btnInfrared_Click(object sender, RoutedEventArgs e) 
 
+        private void cbTalk_Click(object sender, RoutedEventArgs e) {
+            sdFrequency.IsEnabled = cbTalk.IsChecked.Value;
+        } // End private void cbTalk_Click(object sender, RoutedEventArgs e)
+
+        private void toggleCustomDisplay(object sender, RoutedEventArgs e) {
+            if (rbCustom.IsChecked.Value) {
+                txtCustomPath.Visibility = Visibility.Visible;
+            } else {
+                txtCustomPath.Visibility = Visibility.Hidden;
+            } // End if (rbCustom.IsChecked.Value)
+        } // End private void toggleCustomDisplay(object sender, RoutedEventArgs e)
+
         private void sayThis(String strThis) {
             if (boolAllowTalking) {
                 try {
                     ssTheComputer.SpeakAsync(strThis);
                 } catch (Exception e) {
-                    MessageBox.Show(e.Message);
-                    //Console.WriteLine(e.Message);
-                }
+                    MessageBox.Show("SpeakAsync Error: " + e.Message);
+                } // End try
             } // End if (boolAllowTalking)
         } // End private void sayThis(String strThis)
 

@@ -17,4 +17,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SceernSaver|AnyCPU'">
     <StartArguments>/s</StartArguments>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <StartArguments>/s</StartArguments>
+  </PropertyGroup>
 </Project>
