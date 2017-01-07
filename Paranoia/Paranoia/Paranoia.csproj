@@ -59,6 +59,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>eye.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -83,6 +86,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="RegDefs.cs" />
     <Compile Include="Settings.cs" />
     <Page Include="BlankIt.xaml">
       <SubType>Designer</SubType>
@@ -140,10 +144,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="eye_iris.png" />
     <Resource Include="eye_iris2.png" />
     <Resource Include="eye_full.png" />
-    <Resource Include="eye_pupil.png" />
     <Resource Include="eye_pupil2.png" />
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +165,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="eye.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

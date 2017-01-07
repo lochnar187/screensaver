@@ -1,29 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Speech.Synthesis;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Paranoia {
     /// <summary>
     /// Interaction logic for ConfigIt.xaml
     /// </summary>
     public partial class ConfigIt : Window {
-        private Boolean boolAllowTalking = Properties.Settings.Default.AllowTalking;
-        private Boolean boolUseDefaultVoice = Properties.Settings.Default.UseDefaultVoice;
-        private Boolean boolRandomMoves = Properties.Settings.Default.RandomMoves;
-        private Boolean boolRetroLook = Properties.Settings.Default.RetroLook;
-        private int intTalkativeness = Properties.Settings.Default.Talkativeness;
+        public Boolean boolAllowTalking;
+        public Boolean boolUseDefaultVoice;
+        public Boolean boolRandomMoves;
+        public Boolean boolRetroLook;
+        public Boolean boolStillOnly;
+        public int intTalkativeness;
+        private double dblScaleEye;
 
         private SpeechSynthesizer ssTheComputer = new SpeechSynthesizer();
 
@@ -32,34 +23,49 @@ namespace Paranoia {
         } // End public ConfigIt()
 
         private void Window_Loaded(object sender, RoutedEventArgs e) {
-            sdFrequency.Value = intTalkativeness;
-            cbRetro.IsChecked = boolRetroLook;
-            cbTalk.IsChecked = boolAllowTalking;
+            RegDefs rdSource = new RegDefs();
 
-            if (boolRandomMoves) {
-                rbRandom.IsChecked = true;
-            } else {
-                rbScripted.IsChecked = true;
-            } // End if (boolRandomMoves)
+            if (rdSource.LoadSettings(out boolStillOnly, out boolRetroLook, out boolRandomMoves, out boolAllowTalking, out boolUseDefaultVoice, out intTalkativeness, out dblScaleEye)) {
+                sdFrequency.Value = intTalkativeness;
+                sdScaleEye.Value = dblScaleEye;
+                cbRetro.IsChecked = boolRetroLook;
+                cbTalk.IsChecked = boolAllowTalking;
 
-            if (boolAllowTalking) {
-                sayThis("What is your security clearance citizen?");
-            } else {
-                MessageBox.Show("Indicate your clearance level.");
-            } // End if (boolAllowTalking)
+                if (boolStillOnly) {
+                    rbStill.IsChecked = true;
+                } else {
+                    if (boolRandomMoves) {
+                        rbRandom.IsChecked = true;
+                    } else {
+                        rbScripted.IsChecked = true;
+                    } // End if (boolRandomMoves)
+                } // End if (boolRandomMoves)
 
+                if (boolAllowTalking) {
+                    sayThis("What is your security clearance citizen?");
+                } else {
+                    MessageBox.Show("Indicate your clearance level.");
+                } // End if (boolAllowTalking)
+
+            } // End if (rdSource.LoadSettings(out boolRetroLook, out boolRandomMoves, out boolAllowTalking, out boolUseDefaultVoice, out intTalkativeness))
         } // End private void Window_Loaded(object sender, RoutedEventArgs e) 
 
-        private void Window_Unloaded(object sender, RoutedEventArgs e) {
-            // Kill the app but first, kill any SpeechSynthesizer process...WRG
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
+            RegDefs rdSource = new RegDefs();
 
-            if (ssTheComputer.State != SynthesizerState.Ready) {
-                ssTheComputer.SpeakAsyncCancelAll();
-                // Pause to make sure SpeechSynthesizer is killed off...WRG
-                Thread.Sleep(1000);
-            } // End if (ssTheComputer.State != SynthesizerState.Ready)
+            // Save settings then kill the app but first, kill any SpeechSynthesizer process...WRG
+            if (!rdSource.SaveSettings(rbStill.IsChecked.Value, cbRetro.IsChecked.Value, rbRandom.IsChecked.Value, cbTalk.IsChecked.Value, cbDefault.IsChecked.Value, (int)sdFrequency.Value, (double)sdScaleEye.Value)) {
+                MessageBox.Show("Failed to save the settings.");
+                e.Cancel = true;
+            } else {
+                if (ssTheComputer.State != SynthesizerState.Ready) {
+                    ssTheComputer.SpeakAsyncCancelAll();
+                    // Pause to make sure SpeechSynthesizer is killed off...WRG
+                    Thread.Sleep(1000);
+                } // End if (ssTheComputer.State != SynthesizerState.Ready)
 
-            ssTheComputer.Dispose();
+                ssTheComputer.Dispose();
+            } // End if (!rdSource.SaveSettings(cbRetro.IsChecked.Value, rbRandom.IsChecked.Value, cbTalk.IsChecked.Value, cbDefault.IsChecked.Value, (int)sdFrequency.Value))
 
         } // End private void Window_Unloaded(object sender, RoutedEventArgs e)
 
@@ -126,49 +132,27 @@ namespace Paranoia {
             MessageBox.Show("You have been promoted to Troubleshooter status.  Report to Briefing Room, section R-773.2399.334.A732.p997 within 12.317 minutes, for your orders.  Thank you citizen.");
         } // End private void btnInfrared_Click(object sender, RoutedEventArgs e) 
 
+        private void cbTalk_Click(object sender, RoutedEventArgs e) {
+            sdFrequency.IsEnabled = cbTalk.IsChecked.Value;
+        } // End private void cbTalk_Click(object sender, RoutedEventArgs e)
+
+        private void toggleCustomDisplay(object sender, RoutedEventArgs e) {
+            if (rbCustom.IsChecked.Value) {
+                txtCustomPath.Visibility = Visibility.Visible;
+            } else {
+                txtCustomPath.Visibility = Visibility.Hidden;
+            } // End if (rbCustom.IsChecked.Value)
+        } // End private void toggleCustomDisplay(object sender, RoutedEventArgs e)
+
         private void sayThis(String strThis) {
             if (boolAllowTalking) {
                 try {
                     ssTheComputer.SpeakAsync(strThis);
                 } catch (Exception e) {
-                    Console.WriteLine(e.Message);
-                }
+                    MessageBox.Show("SpeakAsync Error: " + e.Message);
+                } // End try
             } // End if (boolAllowTalking)
         } // End private void sayThis(String strThis)
-
-        private void cbRetro_Checked(object sender, RoutedEventArgs e) {
-            boolRetroLook = cbRetro.IsChecked.Value;
-            Properties.Settings.Default.RetroLook = boolRetroLook;
-            Properties.Settings.Default.Save();
-        } // End private void cbRetro_Checked(object sender, RoutedEventArgs e)
-
-        private void rbScripted_Checked(object sender, RoutedEventArgs e) {
-            if (rbScripted.IsChecked.Value) {
-                boolRandomMoves = false;
-                Properties.Settings.Default.RandomMoves = boolRandomMoves;
-                Properties.Settings.Default.Save();
-            } // End if (rbScripted.IsChecked.Value)
-        } // End private void rbScripted_Checked(object sender, RoutedEventArgs e)
-
-        private void rbRandom_Checked(object sender, RoutedEventArgs e) {
-            if (rbRandom.IsChecked.Value) {
-                boolRandomMoves = true;
-                Properties.Settings.Default.RandomMoves = boolRandomMoves;
-                Properties.Settings.Default.Save();
-            } // End if (rbScripted.IsChecked.Value)
-        } // End private void rbRandom_Checked(object sender, RoutedEventArgs e)
-
-        private void cbTalk_Checked(object sender, RoutedEventArgs e) {
-            boolAllowTalking = cbTalk.IsChecked.Value;
-            Properties.Settings.Default.AllowTalking = boolAllowTalking;
-            Properties.Settings.Default.Save();
-        } // End private void cbTalk_Checked(object sender, RoutedEventArgs e)
-
-        private void sdFrequency_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
-            intTalkativeness = (int) sdFrequency.Value;
-            Properties.Settings.Default.Talkativeness = intTalkativeness;
-            Properties.Settings.Default.Save();
-        } // End private void sdFrequency_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 
     } // End public partial class ConfigIt
 } // End namespace Paranoia
