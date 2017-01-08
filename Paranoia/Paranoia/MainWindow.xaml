@@ -28,6 +28,11 @@
                 Test message...This should never be seen.
             </TextBlock>
         </Canvas>
+        <Canvas x:Name="debug" Panel.ZIndex="10" VerticalAlignment="Bottom" Margin="5,0,0,32">
+            <TextBlock x:Name="dbgText" FontSize="24" Visibility="Hidden" Foreground="Yellow" Background="#FF000033">
+                Debug message...This should never be seen.
+            </TextBlock>
+        </Canvas>
         <Canvas x:Name="eye" Panel.ZIndex="0">
             <Image x:Name="iris" Source="eye_iris2.png" 
                    HorizontalAlignment="Center" 

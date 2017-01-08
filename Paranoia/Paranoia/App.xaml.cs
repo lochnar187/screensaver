@@ -14,9 +14,9 @@ using Application = System.Windows.Application;
     Supports the standard three screensaver arguments, "/s" "/c" and "/p x".  If none are passed
     it will use "/c" as the default...WRG
 
-    Added two new arguments, "/r" and "/u".  Use "/r" to wipe the registry settings and enter 
+    Added other arguments, "/d", "/r" and "/u".  Use "/r" to wipe the registry settings and enter 
     config mode to reset them.  Use "/u" to wipe the registry settings and exit without redoing 
-    them...WRG
+    them.  Use "/d" for debug mode, shows some vars and center point of the eye..WRG
 
  *************************************************************************************************/
 
@@ -48,6 +48,9 @@ namespace Paranoia {
                 } else if (e.Args[0].ToLower().StartsWith("/u")) {
                     // Wipe registry...WRG
                     rdSource.DeleteRegistry();
+                } else if (e.Args[0].ToLower().StartsWith("/d")) {
+                    // Debug mode...WRG
+                    ShowScreenSaver(true);
                 } else {
                     // Config mode...WRG
                     ConfigScreenSaver();
@@ -56,7 +59,7 @@ namespace Paranoia {
 
         } // End AppStart(object sender, StartupEventArgs e)
 
-        private void ShowScreenSaver() {
+        private void ShowScreenSaver(Boolean debug = false) {
             foreach (Screen currentScreen in Screen.AllScreens) {
                 if (currentScreen != Screen.PrimaryScreen) {
                     BlankIt currentWindow = new BlankIt();
@@ -71,6 +74,7 @@ namespace Paranoia {
                     theWindow.Left = currentScreen.WorkingArea.Left;
                     theWindow.Width = currentScreen.WorkingArea.Width;
                     theWindow.Height = currentScreen.WorkingArea.Height;
+                    theWindow.boolDebug = debug;
                     theWindow.Show();
                 } // End if (s != Screen.PrimaryScreen)
             } // End foreach (Screen s in Screen.AllScreens)

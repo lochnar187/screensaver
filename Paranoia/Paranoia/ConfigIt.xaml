@@ -12,7 +12,7 @@
                 <StackPanel Orientation="Vertical">
                     <CheckBox x:Name="cbRetro" Foreground="White" IsChecked="True" Background="Black" Margin="0,0,0,8" ToolTip="Toggle the retro look.">Enable CRT scanline animation</CheckBox>
                     <StackPanel Orientation="Horizontal">
-                        <Label Foreground="White" Padding="0,5,5,5" Margin="0,0,10,0" ToolTip="Scale eye size percentage.">Eye Size % :</Label>
+                        <Label Foreground="White" Padding="0,5,5,5" Margin="0,0,5,0" ToolTip="Scale eye size percentage.">Eye Size % :</Label>
                         <Slider x:Name="sdScaleEye" Orientation="Horizontal" Value="100" Minimum="50" Maximum="150" SmallChange="10" LargeChange="10" Background="Black" Foreground="White" AutoToolTipPlacement="BottomRight" Margin="10,0,0,0" ToolTip="Scale eye size percentage." HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" MinWidth="170"  />
                     </StackPanel>
                 </StackPanel>

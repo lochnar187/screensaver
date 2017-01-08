@@ -22,7 +22,8 @@ namespace Paranoia {
             RegistryKey rkCheck = Registry.CurrentUser.OpenSubKey(RK_FUL_ROOT_K, true);
 
             if (rkCheck != null) {
-                // If any new RegKeys are added make one of them the test.  In that way, reinstalls add new keys...WRG
+                // If any new RegKeys are added make one of them the test.  In that way, reinstalls 
+                // add all keys again...WRG
                 strTestIt = (String)rkCheck.GetValue(RK_STILL_ONLY, NOT_THERE_MSG);
                 boolInitNeeded = (strTestIt.CompareTo(NOT_THERE_MSG) == 0);
             } else {
@@ -31,7 +32,8 @@ namespace Paranoia {
                 boolInitNeeded = true;
             } // End if (rkCheck != null)
 
-            // If the first one isn't there, add all of them...WRG
+            // If the first one isn't there, add all of them.  Yes, that overwrites everything making 
+            // this action a factory default reset...WRG
             if (boolInitNeeded) {
                 // Set default values...WRG
                 rkCheck.SetValue(RK_STILL_ONLY, false);

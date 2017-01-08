@@ -15,12 +15,14 @@ namespace Paranoia {
     /// </summary>
 
     public partial class MainWindow : Window {
+        public Boolean boolDebug = false;
         private Boolean boolAllowTalking;
         private Boolean boolUseDefaultVoice;
         private Boolean boolRandomMoves;
         private Boolean boolRetroLook;
         private Boolean boolStillOnly;
         private Boolean boolAnimationInProgress = false;
+        private int intOverrideKnt = 0;
         private int intAnimationControl = 0;
         private int intTalkativeness;
         private int intCenterX = 0;
@@ -33,6 +35,7 @@ namespace Paranoia {
         private SpeechSynthesizer ssTheComputer = new SpeechSynthesizer();
         private DispatcherTimer dtPuppetMaster = new DispatcherTimer();
         private Stopwatch swTimeSinceLastSpeech = new Stopwatch();
+        private Stopwatch swTimeSinceAnimationStart = new Stopwatch();
         private Random ranGenerator = new Random();
 
         public MainWindow() {
@@ -103,6 +106,7 @@ namespace Paranoia {
                 dtPuppetMaster.Interval = new TimeSpan(0, 0, 1);
                 dtPuppetMaster.Start();
 
+                StatusDebug();
             } else {
                 MessageBox.Show("Failed to load setting.");
                 killIt();
@@ -151,6 +155,8 @@ namespace Paranoia {
 
         private void dispatcherTimer_Tick(object sender, EventArgs e) {
             // On each tick run a little animation if no other animation is running...WRG
+            StatusDebug();
+
             if (!boolAnimationInProgress) {
                 if (boolStillOnly) {
                     MostlyStill();
@@ -161,6 +167,18 @@ namespace Paranoia {
                         ScriptedMoves();
                     } // End if (boolRandomMoves)
                 } // End if (boolStillOnly)
+            } else {
+                // Sometimes it gets stuck, don't let that happen.  Currently, 
+                // the max duration of an animation is found in RandomMoves(), 
+                // case 17, adding 5% for a margin.  Don't go beyond that...WRG
+                double dblMaxAnimationDuration = (dblScreenWidth * 17 / 3) * 1.05;
+
+                if (swTimeSinceAnimationStart.ElapsedMilliseconds > dblMaxAnimationDuration) {
+                    // Reset the in progress flag so we are no longer stuck...WRG
+                    boolAnimationInProgress = false;
+                    intOverrideKnt++;
+                } // End if (swTimeSinceAnimationStart.ElapsedMilliseconds > dblMaxAnimationDuration)
+
             } // End  if (!boolAnimationInProgress)
         } // End private void dispatcherTimer_Tick(object sender, EventArgs e)
 
@@ -172,6 +190,25 @@ namespace Paranoia {
         private void textAnimation_Completed(object sender, EventArgs e) {
             msgText.Visibility = Visibility.Hidden;
         } // End private void myanim_Completed(object sender, EventArgs e)
+
+        private void StatusDebug() {
+            if (this.boolDebug) {
+                String strMessage = "(AIP=" + boolAnimationInProgress.ToString() + ") ";
+                strMessage += "(SAS=" + swTimeSinceAnimationStart.ElapsedMilliseconds.ToString() + ") ";
+                strMessage += "(AOK=" + intOverrideKnt.ToString() + ") ";
+                strMessage += "(ACK=" + intAnimationControl.ToString() + ") ";
+                strMessage += "(CX=" + intCenterX.ToString() + ") ";
+                strMessage += "(CY=" + intCenterY.ToString() + ") ";
+                strMessage += "(PME=" + dtPuppetMaster.IsEnabled.ToString() + ") ";
+                strMessage += "(SLS=" + swTimeSinceLastSpeech.ElapsedMilliseconds.ToString() + ") ";
+
+                dbgText.Text = strMessage;
+
+                if (dbgText.Visibility == Visibility.Hidden) {
+                    dbgText.Visibility = Visibility.Visible;
+                } // End if (dbgText.Visibility == Visibility.Hidden)
+            } // End if (this.boolDebug)
+        } // End private void StatusDebug()
 
         private void MostlyStill() {
             int intNextAnimationType = ranGenerator.Next(1, 51); // Upper bound is exclusive so, this gives an int between 1 and 50...WRG
@@ -199,11 +236,11 @@ namespace Paranoia {
 
         private void RandomMoves() {
             // Move the center point of the eye to randomish locations...WRG
-            int intRangeMinY = (int) ((dblScreenHeight / 2) / 10) + 50, // Keep the eye near the bottom of the screen for that iconic Paranoia look...WRG
-                intRangeMaxY = (int) ((((dblScreenHeight / 2) - dblScreenHeight) + 50) * (-1)), 
+            int intRangeMinY = (int) ((dblScreenHeight / 2) * 0.1), // Keep the eye near the bottom of the screen for that iconic Paranoia look...WRG
+                intRangeMaxY = (int) ((((dblScreenHeight / 2) - dblScreenHeight) * 0.9) * (-1)), 
                 intNewCenterY = 0,
-                intRangeMinX = (int) ((dblScreenWidth / 2) - dblScreenWidth) + 50,
-                intRangeMaxX = (int) (dblScreenWidth / 2) + 50,
+                intRangeMinX = (int) (((dblScreenWidth / 2) - dblScreenWidth) * 0.9),
+                intRangeMaxX = (int) ((dblScreenWidth / 2) * 0.9),
                 intNewCenterX = 0,
                 intNextAnimationType = ranGenerator.Next(1, 21); // Upper bound is exclusive so, this gives an int between 1 and 20...WRG
 
@@ -485,7 +522,6 @@ namespace Paranoia {
             dakfScaleX.KeyFrames.Add(new LinearDoubleKeyFrame(dblFactor, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(100))));
             dakfScaleX.KeyFrames.Add(new LinearDoubleKeyFrame(dblFactor, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(4500))));
             dakfScaleX.KeyFrames.Add(new LinearDoubleKeyFrame(1, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(5000))));
-            dakfScaleX.Completed += new EventHandler(movementAnimation_Completed);
             sbMoves.Children.Add(dakfScaleX);
 
             Storyboard.SetTargetProperty(dakfScaleX, new PropertyPath("RenderTransform.ScaleX"));
@@ -496,13 +532,16 @@ namespace Paranoia {
             dakfScaleY.KeyFrames.Add(new LinearDoubleKeyFrame(dblFactor, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(100))));
             dakfScaleY.KeyFrames.Add(new LinearDoubleKeyFrame(dblFactor, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(4500))));
             dakfScaleY.KeyFrames.Add(new LinearDoubleKeyFrame(1, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(5000))));
-            dakfScaleY.Completed += new EventHandler(movementAnimation_Completed);
             sbMoves.Children.Add(dakfScaleY);
 
             Storyboard.SetTargetProperty(dakfScaleY, new PropertyPath("RenderTransform.ScaleY"));
             Storyboard.SetTarget(dakfScaleY, pupil);
 
+            sbMoves.Completed += new EventHandler(movementAnimation_Completed);
             sbMoves.Begin();
+
+            swTimeSinceAnimationStart.Restart();
+
         } // End private void animateDilate(double dblFactor)
 
         private void animateMoveTo(int intPosX, int intPosY, int intDuration) {
@@ -541,7 +580,6 @@ namespace Paranoia {
             daXAxis.Duration = new Duration(TimeSpan.FromMilliseconds(intDuration));
             daXAxis.To = intCenterX + intPosX;
             daXAxis.From = intCenterX;
-            daXAxis.Completed += new EventHandler(movementAnimation_Completed);
             sbMoves.Children.Add(daXAxis);
 
             Storyboard.SetTargetProperty(daXAxis, new PropertyPath("RenderTransform.Children[1].X"));
@@ -551,15 +589,17 @@ namespace Paranoia {
             daYAxis.Duration = new Duration(TimeSpan.FromMilliseconds(intDuration));
             daYAxis.To = intCenterY + intPosY;
             daYAxis.From = intCenterY;
-            daYAxis.Completed += new EventHandler(movementAnimation_Completed);
             sbMoves.Children.Add(daYAxis);
 
             Storyboard.SetTargetProperty(daYAxis, new PropertyPath("RenderTransform.Children[1].Y"));
             Storyboard.SetTarget(daYAxis, eye);
 
+            sbMoves.Completed += new EventHandler(movementAnimation_Completed);
             sbMoves.Begin();
+
             intCenterX += intPosX;
             intCenterY += intPosY;
+            swTimeSinceAnimationStart.Restart();
 
         } // End private void animateMoveTo(int intPosX, int intPosY, int intDuration)
 

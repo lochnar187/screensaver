@@ -129,7 +129,7 @@ namespace Paranoia {
             if (boolAllowTalking) {
                 sayThis("Infrared clearance.  Thank you for your cooperation.");
             } // End if (boolAllowTalking)
-            MessageBox.Show("You have been promoted to Troubleshooter status.  Report to Briefing Room, section R-773.2399.334.A732.p997 within 12.317 minutes, for your orders.  Thank you citizen.");
+            MessageBox.Show("You have been promoted to Troubleshooter status.  Report to Briefing Room, section R-773.2399.334.A732.p997a within 12.317 minutes, for your orders.  Thank you citizen.");
         } // End private void btnInfrared_Click(object sender, RoutedEventArgs e) 
 
         private void cbTalk_Click(object sender, RoutedEventArgs e) {
