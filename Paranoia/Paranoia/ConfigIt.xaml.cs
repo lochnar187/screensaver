@@ -80,7 +80,7 @@ namespace Paranoia {
             if (boolAllowTalking) {
                 sayThis("Violet clearance.  Well, that is odd.  Wait here a moment.");
             } // End if (boolAllowTalking)
-            MessageBox.Show("Report to PLC.  You have been issued a new personal grooming bot, the Mark XV tankbot.  Oh, nevermind, it is homing in on your location in 3...2...");
+            MessageBox.Show("Report to PLC.  You have been issued a new personal grooming bot, the Mark XV Tankbot.  Oh, never mind, it is homing in on your location in 3...2...");
         } // End private void btnPurple_Click(object sender, RoutedEventArgs e) 
 
         private void btnIndigo_Click(object sender, RoutedEventArgs e) {
@@ -94,7 +94,7 @@ namespace Paranoia {
             if (boolAllowTalking) {
                 sayThis("Blue clearance.  Your infraction has been noted.");
             } // End if (boolAllowTalking)
-            MessageBox.Show("Please report for termination immediately.  Report all trators.  Have a nice day.");
+            MessageBox.Show("Please report for termination immediately.  Report all traitors.  Have a nice day.");
         } // End private void btnBlue_Click(object sender, RoutedEventArgs e) 
 
         private void btnGreen_Click(object sender, RoutedEventArgs e) {

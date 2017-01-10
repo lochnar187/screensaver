@@ -74,7 +74,7 @@ namespace Paranoia {
                     eye.RenderTransform = scale;
 
                     DoubleAnimation daScaleX = new DoubleAnimation();
-                    daScaleX.Duration = new Duration(TimeSpan.FromMilliseconds(1));
+                    daScaleX.Duration = new Duration(TimeSpan.FromMilliseconds(1500));
                     daScaleX.From = 1;
                     daScaleX.To = dblScaleFactorHeight;
                     sbMoves.Children.Add(daScaleX);
@@ -83,7 +83,7 @@ namespace Paranoia {
                     Storyboard.SetTarget(daScaleX, eye);
 
                     DoubleAnimation daScaleY = new DoubleAnimation();
-                    daScaleY.Duration = new Duration(TimeSpan.FromMilliseconds(1));
+                    daScaleY.Duration = new Duration(TimeSpan.FromMilliseconds(1500));
                     daScaleY.From = 1;
                     daScaleY.To = dblScaleFactorHeight;
                     sbMoves.Children.Add(daScaleY);
@@ -91,7 +91,9 @@ namespace Paranoia {
                     Storyboard.SetTargetProperty(daScaleY, new PropertyPath("RenderTransform.ScaleY"));
                     Storyboard.SetTarget(daScaleY, eye);
 
+                    sbMoves.Completed += new EventHandler(movementAnimation_Completed);
                     sbMoves.Begin();
+                    boolAnimationInProgress = true;
 
                 } // End if (((dblScaleFactorHeight > 1.01) || (dblScaleFactorHeight < 0.99)) || ((dblScaleFactorWidth > 1.01) || (dblScaleFactorWidth < 0.99)))
 
@@ -131,7 +133,7 @@ namespace Paranoia {
         } // End private void Window_StylusDown(object sender, StylusDownEventArgs e)
 
         private void msgText_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e) {
-            // Scroll the text if visible...WRG
+            // Scroll the text if visible.  For a 130 char message, 12 seconds should be enough time...WRG
             if (msgText.Visibility == Visibility.Visible) {
                 Storyboard sbMoves = new Storyboard();
 
@@ -140,8 +142,8 @@ namespace Paranoia {
                 message.RenderTransform = trans;
 
                 DoubleAnimation daXAxis = new DoubleAnimation();
-                daXAxis.Duration = new Duration(TimeSpan.FromSeconds(10));
-                daXAxis.To = (dblScreenWidth * -1);
+                daXAxis.Duration = new Duration(TimeSpan.FromSeconds(12));
+                daXAxis.To = (dblScreenWidth * -2.75);
                 daXAxis.From = dblScreenWidth;
                 daXAxis.Completed += new EventHandler(textAnimation_Completed);
                 sbMoves.Children.Add(daXAxis);
@@ -410,24 +412,25 @@ namespace Paranoia {
             // Don't get too talkative, limit it by time...WRG
             if ((swTimeSinceLastSpeech.IsRunning && (swTimeSinceLastSpeech.ElapsedMilliseconds > (intTalkativeness * 1000))) || (! swTimeSinceLastSpeech.IsRunning)) {
                 if (intIndex == 0) {
-                    intIndex = ranGenerator.Next(1, 12);
+                    intIndex = ranGenerator.Next(1, 42);
                 } // End if (intIndex == 0)
 
+                // Keep the sayings under 130 chars.  The animation will not look as good with longer text...WRG
                 switch (intIndex) {
                     case 1:
-                        sayThis("Hello citizen!");
+                        sayThis("Hello Citizen!");
                         break;
                     case 2:
-                        sayThis("Happiness is mandatory.");
+                        sayThis("Welcome to Alpha Complex.  Be happy.  Be well.  Be loyal.");
                         break;
                     case 3:
-                        sayThis("Are you happy?");
+                        sayThis("The Computer is your friend.  Do you love the Computer?");
                         break;
                     case 4:
-                        sayThis("At your service.");
+                        sayThis("At your service.  The Computer is your friend.");
                         break;
                     case 5:
-                        sayThis("Remain calm citizen.");
+                        sayThis("Remain calm Citizen.");
                         break;
                     case 6:
                         sayThis("Thank you for your cooperation.");
@@ -443,6 +446,99 @@ namespace Paranoia {
                         break;
                     case 10:
                         sayThis("Your infraction has been noted.");
+                        break;
+                    case 11:
+                        sayThis("Happiness is mandatory.  Are you happy?");
+                        break;
+                    case 12:
+                        sayThis("I'm sorry, Citizen, you are not cleared for that information.");
+                        break;
+                    case 13:
+                        sayThis("Being a citizen of Alpha Complex is fun.");
+                        break;
+                    case 14:
+                        sayThis("Rooting out traitors will make you happy.  Report all traitors.");
+                        break;
+                    case 15:
+                        sayThis("Report to your Happiness Officer for the new and improved \"Feel Good Now\" pill!");
+                        break;
+                    case 16:
+                        sayThis("Your request has been filed, Citizen!  New requests are subject to scan review.  Please bend over.");
+                        break;
+                    case 17:
+                        sayThis("Your mandatory medication allotment has been adjusted.");
+                        break;
+                    case 18:
+                        sayThis("There is no danger.  Dispatching cleaning bots to your location.");
+                        break;
+                    case 19:
+                        sayThis("For your convenience, instructions have been printed in both red on red and white on white.");
+                        break;
+                    case 20:
+                        sayThis("Enjoy another wonderful awake cycle in the safe, peaceful, happy home we call Alpha Complex!");
+                        break;
+                    case 21:
+                        sayThis("Remain calm, Citizen.  Love the Computer.  The Computer is your friend.");
+                        break;
+                    case 22:
+                        sayThis("No, Citizen, I did not hear screams.  It was nothing.  Move along now.  Love the Computer.");
+                        break;
+                    case 23:
+                        sayThis("There is no danger.  Happiness is mandatory.  Be at peace, Citizen.");
+                        break;
+                    case 24:
+                        sayThis("Yes, Citizen, the food vats are in perfect working order.  Nothing to see there.");
+                        break;
+                    case 25:
+                        sayThis("Mutations are a Communist plot.  Report all mutants.  Be happy, Citizen!");
+                        break;
+                    case 26:
+                        sayThis("Beware the evil ways of Communism.  Report all traitors.  Have a nice day.");
+                        break;
+                    case 27:
+                        sayThis("Thank you for your mandatory volition.  Report to R&D to test the new Mark 7 body armor, so lite you'd swear it's not there.");
+                        break;
+                    case 28:
+                        sayThis("You have been reassigned, report to REDACTED.  Failure to comply is treason.  Have a wonderful day, Citizen.");
+                        break;
+                    case 29:
+                        sayThis("The Computer is your friend.  The Computer wants you to be happy.  Therefore, happiness is mandatory.");
+                        break;
+                    case 30:
+                        sayThis("As a reward for good behavior, oxygen rations in your sector will only be reduced 5%!  Breathe the air of Freedom, Citizen!");
+                        break;
+                    case 31:
+                        sayThis("Alpha Complex is safe and happy.  Therefore, all citizens are required to be both safe and happy.");
+                        break;
+                    case 32:
+                        sayThis("Traitors have been reported in the area.  Shoot all traitors on sight.  Keep your laser handy.  Trust no one.");
+                        break;
+                    case 33:
+                        sayThis("Citizen, you are still alive!  Well done.");
+                        break;
+                    case 34:
+                        sayThis("The term \"Eureka\" is beyond your security clearance.  Knowledge of this term is treason.  Report for termination.");
+                        break;
+                    case 35:
+                        sayThis("Failure to comply with the following is treason and will result in termination.  01010000 01101100 01100101 01100001");
+                        break;
+                    case 36:
+                        sayThis("Do not be alarmed, Citizen.  Being alarmed is treason.");
+                        break;
+                    case 37:
+                        sayThis("Good news, Citizen!  You have been selected for a new fun and exciting job!  Report to Reactor Shielding station R-77-234.");
+                        break;
+                    case 38:
+                        sayThis("Error 530: Connection refused, unknown IP7 address.  Thank you, Citizen.");
+                        break;
+                    case 39:
+                        sayThis("This is a test.  Thank you for your cooperation.");
+                        break;
+                    case 40:
+                        sayThis("All food vat service requests must now include a TF-63B form.  To requisition TF-63B forms, submit a completed TF-63B form to PLC.");
+                        break;
+                    case 41:
+                        sayThis("Congratulations, Citizen!  You have been chosen to test the new model 3 bionic lung.  Report for surgery.");
                         break;
                     default:
                         sayThis("Please disregard this message.");
