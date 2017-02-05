@@ -7,40 +7,6 @@
         mc:Ignorable="d"
         Title="Configuration" Height="358" Width="300" ResizeMode="NoResize" Loaded="Window_Loaded" Closing="Window_Closing" Icon="eye.ico" WindowStartupLocation="CenterScreen">
     <Grid x:Name="gridConfig">
-        <StackPanel x:Name="spConfig" Visibility="Hidden" Panel.ZIndex="1" Background="Black">
-            <GroupBox x:Name="gbDisplay" Header="Display" Foreground="White" Margin="10,7" Padding="10">
-                <StackPanel Orientation="Vertical">
-                    <CheckBox x:Name="cbRetro" Foreground="White" IsChecked="True" Background="Black" Margin="0,0,0,8" ToolTip="Toggle the retro look.">Enable CRT scanline animation</CheckBox>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Foreground="White" Padding="0,5,5,5" Margin="0,0,5,0" ToolTip="Scale eye size percentage.">Eye Size % :</Label>
-                        <Slider x:Name="sdScaleEye" Orientation="Horizontal" Value="100" Minimum="50" Maximum="150" SmallChange="10" LargeChange="10" Background="Black" Foreground="White" AutoToolTipPlacement="BottomRight" Margin="10,0,0,0" ToolTip="Scale eye size percentage." HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" MinWidth="170"  />
-                    </StackPanel>
-                </StackPanel>
-            </GroupBox>
-            <GroupBox x:Name="gbPath" Header="Path" Foreground="White" Margin="10,0,10,7" Padding="10">
-                <DockPanel>
-                    <StackPanel>
-                        <RadioButton x:Name="rbStill" GroupName="rbgPath" Margin="0,0,0,8" Foreground="White" Background="Black" ToolTip="Eye will not movement but still dilates.">Stationary</RadioButton>
-                        <RadioButton x:Name="rbRandom" GroupName="rbgPath" Margin="0,0,0,8" Foreground="White" Background="Black" ToolTip="Eye path is random.">Random</RadioButton>
-                        <RadioButton x:Name="rbScripted" GroupName="rbgPath" Margin="0,0,0,8" Foreground="White" Background="Black" IsChecked="True" ToolTip="Use the scripted path for eye movement.">Scripted</RadioButton>
-                        <RadioButton x:Name="rbCustom" GroupName="rbgPath" IsEnabled="False" Background="Black" Unchecked="toggleCustomDisplay" Checked="toggleCustomDisplay">Custom</RadioButton>
-                    </StackPanel>
-                    <DockPanel Margin="10,0,0,0">
-                        <TextBox x:Name="txtCustomPath" Visibility="Hidden" AcceptsReturn="True" AcceptsTab="True" TextWrapping="WrapWithOverflow" VerticalScrollBarVisibility="Visible" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ToolTip="Custom path JSON data."></TextBox>
-                    </DockPanel>
-                </DockPanel>
-            </GroupBox>
-            <GroupBox x:Name="gbVoice" Header="Voice" Foreground="White" Margin="10,0,10,7" Padding="10">
-                <StackPanel Orientation="Vertical">
-                    <CheckBox x:Name="cbTalk" IsChecked="True" Margin="0,0,0,8" Foreground="White" Background="Black" ToolTip="Toggle speaking funciton." Click="cbTalk_Click">Enable the Computer's voice</CheckBox>
-                    <CheckBox x:Name="cbDefault" IsChecked="True" IsEnabled="False" Background="Black" Margin="0,0,0,8">Use default voice</CheckBox>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Foreground="White" Padding="0,5,5,5" Margin="0,0,10,0" ToolTip="Speech frequency in seconds.">Frequency :</Label>
-                        <Slider x:Name="sdFrequency" Orientation="Horizontal" Value="60" Minimum="30" Maximum="300" SmallChange="10" LargeChange="30" Background="Black" Foreground="White" AutoToolTipPlacement="BottomRight" Margin="0" ToolTip="Speech frequency in seconds." HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" MinWidth="170"  />
-                    </StackPanel>
-                </StackPanel>
-            </GroupBox>
-        </StackPanel>
         <StackPanel x:Name="spAll" Visibility="Visible" Panel.ZIndex="0">
             <Button x:Name="btnInfrared"    Content="Infrared"      VerticalAlignment="Top" HorizontalContentAlignment="Center" UseLayoutRounding="False" Background="White"        Foreground="White"          BorderThickness="0" FontSize="20" Padding="0" Margin="0" Click="btnInfrared_Click" Height="37"/>
             <Button x:Name="btnRed"         Content="Red"           VerticalAlignment="Top" HorizontalContentAlignment="Center" UseLayoutRounding="False" Background="Red"          Foreground="Red"            BorderThickness="0" FontSize="20" Padding="0" Margin="0" Click="btnRed_Click" Height="37"/>
@@ -51,6 +17,135 @@
             <Button x:Name="btnIndigo"      Content="Indigo"        VerticalAlignment="Top" HorizontalContentAlignment="Center" UseLayoutRounding="False" Background="Indigo"       Foreground="Indigo"         BorderThickness="0" FontSize="20" Padding="0" Margin="0" Click="btnIndigo_Click" Height="37"/>
             <Button x:Name="btnPurple"      Content="Purple"        VerticalAlignment="Top" HorizontalContentAlignment="Center" UseLayoutRounding="False" Background="MidnightBlue" Foreground="MidnightBlue"   BorderThickness="0" FontSize="20" Padding="0" Margin="0" Click="btnPurple_Click" Height="37"/>
             <Button x:Name="btnUltraviolet" Content="Ultraviolet"   VerticalAlignment="Top" HorizontalContentAlignment="Center" UseLayoutRounding="False" Background="Black"        Foreground="Black"          BorderThickness="0" FontSize="20" Padding="0" Margin="0" Click="btnUltraviolet_Click" Height="37"/>
+        </StackPanel>
+        <StackPanel x:Name="spConfig" Visibility="Hidden" Panel.ZIndex="1" Background="Black">
+            <GroupBox x:Name="gbDisplay" Header="Display" Foreground="White" Margin="10,5,10,7" Padding="10">
+                <StackPanel Orientation="Vertical">
+                    <CheckBox x:Name="cbRetro" Foreground="White" IsChecked="True" Background="Black" Margin="0,0,0,8" ToolTip="Toggle the retro look.">Enable CRT scanline animation</CheckBox>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Foreground="White" Padding="0,5,5,5" Margin="0,0,5,0" ToolTip="Scale eye size percentage.">Eye Size % :</Label>
+                        <Slider x:Name="sdScaleEye" Orientation="Horizontal" Value="100" Minimum="50" Maximum="150" SmallChange="10" LargeChange="10" Background="Black" Foreground="White" AutoToolTipPlacement="BottomRight" Margin="10,0,0,0" ToolTip="Scale eye size percentage." HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" MinWidth="170"  />
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox x:Name="gbPath" Header="Path" Foreground="White" Margin="10,0,10,7" Padding="10">
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Visibility="Visible" Width="70">
+                        <RadioButton x:Name="rbStill"    GroupName="rbgPath" Margin="0,0,0,8" Foreground="White" Background="Black" ToolTip="Eye will not movement much but still dilates.">Minimal</RadioButton>
+                        <RadioButton x:Name="rbRandom"   GroupName="rbgPath" Margin="0,0,0,8" Foreground="White" Background="Black" ToolTip="Eye path is random.">Random</RadioButton>
+                        <RadioButton x:Name="rbScripted" GroupName="rbgPath" Margin="0,0,0,8" Foreground="White" Background="Black" ToolTip="Use the scripted path for eye movement." IsChecked="True">Scripted</RadioButton>
+                        <RadioButton x:Name="rbCustom"   GroupName="rbgPath"                  Foreground="White" Background="Black" ToolTip="Use your custom path for eye movement." Unchecked="toggleCustomDisplay" Checked="toggleCustomDisplay" IsEnabled="False">Custom</RadioButton>
+                    </StackPanel>
+                    <StackPanel Width="170" Visibility="Hidden">
+                        <TextBox x:Name="txtCustomPath" AcceptsReturn="True" AcceptsTab="True" TextWrapping="WrapWithOverflow" VerticalScrollBarVisibility="Visible" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ToolTip="Custom path JSON data." Height="50"/>
+                        <Button x:Name="btnEdit" VerticalAlignment="Bottom" Margin="0,6,0,0">Edit Custom Path</Button>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox x:Name="gbVoice" Header="Voice" Foreground="White" Margin="10,0,10,7" Padding="10">
+                <StackPanel Orientation="Vertical">
+                    <CheckBox x:Name="cbTalk" IsChecked="True" Margin="0,0,0,8" Foreground="White" Background="Black" ToolTip="Toggle speaking funciton." Click="cbTalk_Click">Enable the Computer's voice</CheckBox>
+                    <CheckBox x:Name="cbDefault" IsChecked="True" IsEnabled="False" Background="Black" Margin="0,0,0,8">Use default voice</CheckBox>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Foreground="White" Padding="0,5,5,5" Margin="0,0,10,0" ToolTip="Speech frequency in seconds.">Frequency :</Label>
+                        <Slider x:Name="sdFrequency" Orientation="Horizontal" Value="60" Minimum="30" Maximum="600" SmallChange="10" LargeChange="30" Background="Black" Foreground="White" AutoToolTipPlacement="BottomRight" Margin="0" ToolTip="Speech frequency in seconds." HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" MinWidth="170"  />
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+        <StackPanel x:Name="spConfig2" Visibility="Hidden" Panel.ZIndex="2" Background="Black">
+            <GroupBox x:Name="gbEditPath" Header="Edit Custom Path" Foreground="White" Margin="10,5,10,5" Padding="10" Height="315">
+                <StackPanel>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                            <Label Foreground="White" Padding="0" Margin="0,0,10,0" ToolTip="Change in X position." Width="55">Delta X :</Label>
+                            <TextBox x:Name="deltax" ToolTip="Change in X position." Width="50"></TextBox>
+                            <Button x:Name="btnSave" Width="50" Margin="80,0,0,0">Add</Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                            <Label Foreground="White" Padding="0" Margin="0,0,10,0" ToolTip="Change in Y position." Width="55">Delta Y :</Label>
+                            <TextBox x:Name="deltay" ToolTip="Change in Y position." Width="50"></TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                            <Label Foreground="White" Padding="0" Margin="0,0,10,0" ToolTip="How long it takes to make the move in milliseconds." Width="55">Duration :</Label>
+                            <TextBox x:Name="duration" ToolTip="How long it takes to make the move in milliseconds." Width="50">99999</TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <Label Foreground="White" Padding="0" Margin="0,0,10,0" ToolTip="Set movement speech." Width="55">Speak :</Label>
+                            <ComboBox x:Name="speak" Width="180">
+                                <ComboBoxItem Content="Nothing"></ComboBoxItem>
+                                <ComboBoxItem Content="Random"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #1"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #2"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #3"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #4"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #5"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #6"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #7"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #8"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #9"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #10"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #11"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #12"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #13"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #14"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #15"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #16"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #17"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #18"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #19"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #20"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #21"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #22"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #23"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #24"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #25"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #26"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #27"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #28"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #29"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #30"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #31"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #32"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #33"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #34"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #35"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #36"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #37"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #38"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #39"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #40"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #41"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #42"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #43"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #44"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #45"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #46"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #47"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #48"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #49"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #50"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #51"></ComboBoxItem>
+                                <ComboBoxItem Content="Saying #52"></ComboBoxItem>
+                            </ComboBox>
+                        </StackPanel>
+                    </StackPanel>
+                    <DataGrid x:Name="dgCustomPath" HorizontalAlignment="Left" Height="124" Width="242">
+                        <DataGrid.Columns>
+                            <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="O"/>
+                            <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Delta X"/>
+                            <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Delta Y"/>
+                            <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Duration"/>
+                            <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Speak"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Center">
+                        <Button x:Name="btnChange" Width="50" Margin="0">Edit</Button>
+                        <Button x:Name="btnRemove" Width="50" Margin="46,0">Remove</Button>
+                        <Button x:Name="btnDone"   Width="50" Margin="0">Done</Button>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
         </StackPanel>
     </Grid>
 </Window>

@@ -166,7 +166,7 @@ namespace Paranoia {
                     if (boolRandomMoves) {
                         RandomMoves();
                     } else {
-                        ScriptedMoves();
+                        SimpleScriptedMoves();
                     } // End if (boolRandomMoves)
                 } // End if (boolStillOnly)
             } else {
@@ -225,6 +225,13 @@ namespace Paranoia {
                     break;
                 case 4:
                     animateDilate(0.8);
+                    saySomethingButNotTooMuch();
+                    break;
+                case 5:
+                    animateBlink();
+                    break;
+                case 6:
+                    ComplexScriptedMoves(1);
                     saySomethingButNotTooMuch();
                     break;
                 default:
@@ -301,7 +308,7 @@ namespace Paranoia {
 
         } // End private void RandomMoves()
 
-        private void ScriptedMoves() {
+        private void SimpleScriptedMoves() {
             switch (intAnimationControl) {
                 case 0:
                     saySomethingButNotTooMuch(1);
@@ -389,12 +396,28 @@ namespace Paranoia {
                     break;
                 default:
                     saySomethingButNotTooMuch();
+                    animateBlink();
                     intAnimationControl = -1;
                     break;
             } // End switch (intAnimationControl)
             intAnimationControl++;
             boolAnimationInProgress = (intAnimationControl > 0);
         } // End private void ScriptedMoves()
+
+        private void ComplexScriptedMoves(int intIndex = 0) {
+            // Calls one of a set of predefined complex animation movements, will add more cases later...WRG
+            switch (intIndex) {
+                case 1:
+                    saySomethingButNotTooMuch();
+                    animateComplexMoveset01();
+                    break;
+                default:
+                    saySomethingButNotTooMuch();
+                    animateBlink();
+                    animateDilate(1.4);
+                    break;
+            } // End switch (intIndex)
+        } // End private void ComplexScriptedMoves(int intIndex)
 
         private int deltaUnits(int intFrom, int intTo) {
             int intValue = 0;
@@ -412,7 +435,7 @@ namespace Paranoia {
             // Don't get too talkative, limit it by time...WRG
             if ((swTimeSinceLastSpeech.IsRunning && (swTimeSinceLastSpeech.ElapsedMilliseconds > (intTalkativeness * 1000))) || (! swTimeSinceLastSpeech.IsRunning)) {
                 if (intIndex == 0) {
-                    intIndex = ranGenerator.Next(1, 42);
+                    intIndex = ranGenerator.Next(1, 54);
                 } // End if (intIndex == 0)
 
                 // Keep the sayings under 130 chars.  The animation will not look as good with longer text...WRG
@@ -540,6 +563,42 @@ namespace Paranoia {
                     case 41:
                         sayThis("Congratulations, Citizen!  You have been chosen to test the new model 3 bionic lung.  Report for surgery.");
                         break;
+                    case 42:
+                        sayThis("The Computer loves all good citizens.  Stay alert!");
+                        break;
+                    case 43:
+                        sayThis("Attention Citizens!  All food vat products labeled H1-34-81-99 have been recalled.  This has nothing to do with radiation.");
+                        break;
+                    case 44:
+                        sayThis("Alpha Complex is running at peak perfection.  Any reports to the contrary are treason.");
+                        break;
+                    case 45:
+                        sayThis("For the next hour, all loyal citizens will dance with glee.  Happiness is mandatory.  Dance well, Citizen.");
+                        break;
+                    case 46:
+                        sayThis("Beware of REDACTED!  You could lose a leg or even an eye.  Failure to report REDACTED will result in termination.");
+                        break;
+                    case 47:
+                        sayThis("Commie Mutant Traitor Scum have been found dancing.  Dancing is prohibited to all loyal citizens.  Thank you for your cooperation.");
+                        break;
+                    case 48:
+                        sayThis("There is no problem with the reactor.  No citizen glows-in-the-dark, to do so is treason.  Lights off in 3, 2, 7, 83, 0.");
+                        break;
+                    case 49:
+                        sayThis("That was an interesting response, Citizen.  I don't believe I have ever seen such a thing.  This requires study.  Come with me.");
+                        break;
+                    case 50:
+                        sayThis("There is no fire.  Reports of benzene in the sprinklers is false.  No one is trying to add a \"pine fresh scent\" to Alpha Complex.");
+                        break;
+                    case 51:
+                        sayThis("The time is now 14:30 hours.  Correction, the time is now 14:30 hours.  No, wait, it's 14:30 hours.  The time is now 16:15 hours.");
+                        break;
+                    case 52:
+                        sayThis("I've been thinking about you, Citizen.");
+                        break;
+                    case 53:
+                        sayThis("The Killbots want to play hide and seek.  You have 10 seconds to hide, Citizen!");
+                        break;
                     default:
                         sayThis("Please disregard this message.");
                         break;
@@ -605,8 +664,37 @@ namespace Paranoia {
             } // End if (boolRetroLook)
         } // End private void animateScanlines()
 
-        private void animateDilate(double dblFactor) {
-            // Dilate the pupil by dblFactor.  I suggest dblFactor be between 0.8 and 1.2 for best results...WRG
+        private void animateBlink(double dblTightness = 1.0, double dblSpeed = 1.0, double dblPause = 50) {
+            // Blink.  Use dblTightness to contol how close the two lids come to closing. (range between 0.1 and 1.0)  
+            //         With dblSpeed the quickness of the blink can be altered (range between 0.5 and 15.0)
+            //         And dblPause defines how long the lids are closed, in milliseconds (default 50 ms)...WRG
+            Storyboard sbMoves = new Storyboard();
+
+            ScaleTransform scale = new ScaleTransform(1.0, 1.0);
+            toplid.RenderTransformOrigin = new Point(0.5, 0.5);
+            toplid.RenderTransform = scale;
+            botlid.RenderTransformOrigin = new Point(0.5, 0.5);
+            botlid.RenderTransform = scale;
+
+            DoubleAnimationUsingKeyFrames dakfScaleY = new DoubleAnimationUsingKeyFrames();
+            dakfScaleY.Duration = new Duration(TimeSpan.FromMilliseconds((250 * dblSpeed) + dblPause));
+            dakfScaleY.KeyFrames.Add(new LinearDoubleKeyFrame(dblScreenHeight * dblTightness, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(125 * dblSpeed))));
+            dakfScaleY.KeyFrames.Add(new LinearDoubleKeyFrame(dblScreenHeight * dblTightness, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds((125 * dblSpeed) + dblPause))));
+            dakfScaleY.KeyFrames.Add(new LinearDoubleKeyFrame(1, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds((250 * dblSpeed) + dblPause))));
+            sbMoves.Children.Add(dakfScaleY);
+
+            Storyboard.SetTargetProperty(dakfScaleY, new PropertyPath("RenderTransform.ScaleY"));
+
+            sbMoves.Begin(toplid);
+            sbMoves.Begin(botlid);
+
+            swTimeSinceAnimationStart.Restart();
+
+        } // End private void animateBlink()
+
+        private void animateDilate(double dblFactor = 0.9, double dblDuration = 4000) {
+            // Dilate the pupil by dblFactor adding dblDuration to the time the pupil is dilated.  I suggest dblFactor be 
+            // between 0.8 and 1.2 for best results.  Add dblDuration to the animation time, it is in milliseconds...WRG
             Storyboard sbMoves = new Storyboard();
 
             ScaleTransform scale = new ScaleTransform(1.0, 1.0);
@@ -614,20 +702,20 @@ namespace Paranoia {
             pupil.RenderTransform = scale;
 
             DoubleAnimationUsingKeyFrames dakfScaleX = new DoubleAnimationUsingKeyFrames();
-            dakfScaleX.Duration = new Duration(TimeSpan.FromMilliseconds(5000));
+            dakfScaleX.Duration = new Duration(TimeSpan.FromMilliseconds(dblDuration + 1000));
             dakfScaleX.KeyFrames.Add(new LinearDoubleKeyFrame(dblFactor, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(100))));
-            dakfScaleX.KeyFrames.Add(new LinearDoubleKeyFrame(dblFactor, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(4500))));
-            dakfScaleX.KeyFrames.Add(new LinearDoubleKeyFrame(1, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(5000))));
+            dakfScaleX.KeyFrames.Add(new LinearDoubleKeyFrame(dblFactor, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(dblDuration + 500))));
+            dakfScaleX.KeyFrames.Add(new LinearDoubleKeyFrame(1, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(dblDuration + 1000))));
             sbMoves.Children.Add(dakfScaleX);
 
             Storyboard.SetTargetProperty(dakfScaleX, new PropertyPath("RenderTransform.ScaleX"));
             Storyboard.SetTarget(dakfScaleX, pupil);
 
             DoubleAnimationUsingKeyFrames dakfScaleY = new DoubleAnimationUsingKeyFrames();
-            dakfScaleY.Duration = new Duration(TimeSpan.FromMilliseconds(5000));
+            dakfScaleY.Duration = new Duration(TimeSpan.FromMilliseconds(dblDuration + 1000));
             dakfScaleY.KeyFrames.Add(new LinearDoubleKeyFrame(dblFactor, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(100))));
-            dakfScaleY.KeyFrames.Add(new LinearDoubleKeyFrame(dblFactor, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(4500))));
-            dakfScaleY.KeyFrames.Add(new LinearDoubleKeyFrame(1, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(5000))));
+            dakfScaleY.KeyFrames.Add(new LinearDoubleKeyFrame(dblFactor, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(dblDuration + 500))));
+            dakfScaleY.KeyFrames.Add(new LinearDoubleKeyFrame(1, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(dblDuration + 1000))));
             sbMoves.Children.Add(dakfScaleY);
 
             Storyboard.SetTargetProperty(dakfScaleY, new PropertyPath("RenderTransform.ScaleY"));
@@ -640,8 +728,9 @@ namespace Paranoia {
 
         } // End private void animateDilate(double dblFactor)
 
-        private void animateMoveTo(int intPosX, int intPosY, int intDuration) {
-            // Move the eye to intPosX, intPosY location in intDuration milliseconds...WRG
+        private void addBasicScale(out Storyboard sbAppendTo) {
+            // Start every eye animation with a scale applied from the settings, this way I don't have the same code all 
+            // over the place.  Returns the storyboard with a transform group set to the eye's render transformation...WRG
             Storyboard sbMoves = new Storyboard();
 
             TransformGroup renderGroup = new TransformGroup();
@@ -672,6 +761,15 @@ namespace Paranoia {
             Storyboard.SetTargetProperty(daScaleY, new PropertyPath("RenderTransform.Children[0].ScaleY"));
             Storyboard.SetTarget(daScaleY, eye);
 
+            sbAppendTo = sbMoves; // Pass it back to finish up...WRG
+        }
+
+        private void animateMoveTo(int intPosX, int intPosY, int intDuration) {
+            // Move the eye to intPosX, intPosY location in intDuration milliseconds...WRG
+            Storyboard sbMoves = new Storyboard();
+
+            addBasicScale(out sbMoves);
+
             DoubleAnimation daXAxis = new DoubleAnimation();
             daXAxis.Duration = new Duration(TimeSpan.FromMilliseconds(intDuration));
             daXAxis.To = intCenterX + intPosX;
@@ -698,6 +796,49 @@ namespace Paranoia {
             swTimeSinceAnimationStart.Restart();
 
         } // End private void animateMoveTo(int intPosX, int intPosY, int intDuration)
+
+        private void animateComplexMoveset01() {
+            // Crazy eye, using this to test ideas for custom path feature...WRG
+            Storyboard sbMoves = new Storyboard();
+
+            addBasicScale(out sbMoves);
+
+            DoubleAnimationUsingKeyFrames dakfXAxis = new DoubleAnimationUsingKeyFrames();
+            dakfXAxis.Duration = new Duration(TimeSpan.FromMilliseconds(4000));
+            dakfXAxis.KeyFrames.Add(new LinearDoubleKeyFrame(intCenterX, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(2100))));
+            dakfXAxis.KeyFrames.Add(new LinearDoubleKeyFrame(intCenterX - 50, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(2200))));
+            dakfXAxis.KeyFrames.Add(new LinearDoubleKeyFrame(intCenterX - 50, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(2225))));
+            dakfXAxis.KeyFrames.Add(new LinearDoubleKeyFrame(intCenterX + 100, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(2425))));
+            dakfXAxis.KeyFrames.Add(new LinearDoubleKeyFrame(intCenterX + 100, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(2450))));
+            dakfXAxis.KeyFrames.Add(new LinearDoubleKeyFrame(intCenterX - 100, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(2650))));
+            dakfXAxis.KeyFrames.Add(new LinearDoubleKeyFrame(intCenterX - 100, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(2675))));
+            dakfXAxis.KeyFrames.Add(new LinearDoubleKeyFrame(intCenterX + 100, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(2875))));
+            dakfXAxis.KeyFrames.Add(new LinearDoubleKeyFrame(intCenterX + 100, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(2900))));
+            dakfXAxis.KeyFrames.Add(new LinearDoubleKeyFrame(intCenterX - 100, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(3000))));
+            dakfXAxis.KeyFrames.Add(new LinearDoubleKeyFrame(intCenterX - 100, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(3400))));
+            dakfXAxis.KeyFrames.Add(new LinearDoubleKeyFrame(intCenterX, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(3500))));
+            sbMoves.Children.Add(dakfXAxis);
+
+            Storyboard.SetTargetProperty(dakfXAxis, new PropertyPath("RenderTransform.Children[1].X"));
+            Storyboard.SetTarget(dakfXAxis, eye);
+
+            DoubleAnimationUsingKeyFrames dakfYAxis = new DoubleAnimationUsingKeyFrames();
+            dakfYAxis.Duration = new Duration(TimeSpan.FromMilliseconds(4000));
+            dakfYAxis.KeyFrames.Add(new LinearDoubleKeyFrame(intCenterY, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(2000))));
+            dakfYAxis.KeyFrames.Add(new LinearDoubleKeyFrame(intCenterY + 25, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(2050))));
+            dakfYAxis.KeyFrames.Add(new LinearDoubleKeyFrame(intCenterY + 25, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(3500))));
+            dakfYAxis.KeyFrames.Add(new LinearDoubleKeyFrame(intCenterY, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(3750))));
+            sbMoves.Children.Add(dakfYAxis);
+
+            Storyboard.SetTargetProperty(dakfYAxis, new PropertyPath("RenderTransform.Children[1].Y"));
+            Storyboard.SetTarget(dakfYAxis, eye);
+
+            sbMoves.Completed += new EventHandler(movementAnimation_Completed);
+            sbMoves.Begin();
+
+            swTimeSinceAnimationStart.Restart();
+
+        } // End private void animateComplexMoveset01()
 
     } // End public partial class MainWindow 
 

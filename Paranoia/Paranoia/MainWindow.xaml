@@ -18,16 +18,20 @@
         Title="Hello citizen!  Your friend the Computer is here.  Are you happy?" 
         Padding="0" Margin="0">
     <Grid x:Name="MainGrid">
-        <Canvas x:Name="scanlines" Panel.ZIndex="2" HorizontalAlignment="Stretch" Margin="-200">
+        <Canvas x:Name="scanlines" Panel.ZIndex="3" HorizontalAlignment="Stretch" Margin="-200">
             <Canvas.Background>
                 <ImageBrush ImageSource="scanlines.png" TileMode="None" Stretch="Fill"/>
             </Canvas.Background>
         </Canvas>
-        <Canvas x:Name="message" Panel.ZIndex="1">
+        <Canvas x:Name="message" Panel.ZIndex="2">
             <TextBlock x:Name="msgText" FontSize="64" Visibility="Hidden" IsVisibleChanged="msgText_IsVisibleChanged" FontWeight="Bold">
                 Test message...This should never be seen.
             </TextBlock>
         </Canvas>
+        <Grid x:Name="lids" Panel.ZIndex="1">
+            <Rectangle x:Name="toplid" Fill="Black" Height="1" VerticalAlignment="Top"    HorizontalAlignment="Stretch"></Rectangle>
+            <Rectangle x:Name="botlid" Fill="Black" Height="1" VerticalAlignment="Bottom" HorizontalAlignment="Stretch"></Rectangle>
+        </Grid>
         <Canvas x:Name="debug" Panel.ZIndex="10" VerticalAlignment="Bottom" Margin="5,0,0,32">
             <TextBlock x:Name="dbgText" FontSize="24" Visibility="Hidden" Foreground="Yellow" Background="#FF000033">
                 Debug message...This should never be seen.
