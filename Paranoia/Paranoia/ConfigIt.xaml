@@ -5,36 +5,49 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Paranoia"
         mc:Ignorable="d"
-        Title="Configuration" Height="358" Width="300" ResizeMode="NoResize" Loaded="Window_Loaded" Closing="Window_Closing" Icon="eye.ico" WindowStartupLocation="CenterScreen">
+        Title="Configuration" SizeToContent="WidthAndHeight" ResizeMode="NoResize" Loaded="Window_Loaded" Closing="Window_Closing" Icon="eye.ico" WindowStartupLocation="CenterScreen">
     <Grid x:Name="gridConfig">
         <StackPanel x:Name="spAll" Visibility="Visible" Panel.ZIndex="0">
-            <Button x:Name="btnInfrared"    Content="Infrared"      VerticalAlignment="Top" HorizontalContentAlignment="Center" UseLayoutRounding="False" Background="White"        Foreground="White"          BorderThickness="0" FontSize="20" Padding="0" Margin="0" Click="btnInfrared_Click" Height="37"/>
-            <Button x:Name="btnRed"         Content="Red"           VerticalAlignment="Top" HorizontalContentAlignment="Center" UseLayoutRounding="False" Background="Red"          Foreground="Red"            BorderThickness="0" FontSize="20" Padding="0" Margin="0" Click="btnRed_Click" Height="37"/>
-            <Button x:Name="btnOrange"      Content="Orange"        VerticalAlignment="Top" HorizontalContentAlignment="Center" UseLayoutRounding="False" Background="Orange"       Foreground="Orange"         BorderThickness="0" FontSize="20" Padding="0" Margin="0" Click="btnOrange_Click" Height="37"/>
-            <Button x:Name="btnYellow"      Content="Yellow"        VerticalAlignment="Top" HorizontalContentAlignment="Center" UseLayoutRounding="False" Background="Yellow"       Foreground="Yellow"         BorderThickness="0" FontSize="20" Padding="0" Margin="0" Click="btnYellow_Click" Height="37"/>
-            <Button x:Name="btnGreen"       Content="Green"         VerticalAlignment="Top" HorizontalContentAlignment="Center" UseLayoutRounding="False" Background="Green"        Foreground="Green"          BorderThickness="0" FontSize="20" Padding="0" Margin="0" Click="btnGreen_Click" Height="37"/>
-            <Button x:Name="btnBlue"        Content="Blue"          VerticalAlignment="Top" HorizontalContentAlignment="Center" UseLayoutRounding="False" Background="Blue"         Foreground="Blue"           BorderThickness="0" FontSize="20" Padding="0" Margin="0" Click="btnBlue_Click" Height="37"/>
-            <Button x:Name="btnIndigo"      Content="Indigo"        VerticalAlignment="Top" HorizontalContentAlignment="Center" UseLayoutRounding="False" Background="Indigo"       Foreground="Indigo"         BorderThickness="0" FontSize="20" Padding="0" Margin="0" Click="btnIndigo_Click" Height="37"/>
-            <Button x:Name="btnPurple"      Content="Purple"        VerticalAlignment="Top" HorizontalContentAlignment="Center" UseLayoutRounding="False" Background="MidnightBlue" Foreground="MidnightBlue"   BorderThickness="0" FontSize="20" Padding="0" Margin="0" Click="btnPurple_Click" Height="37"/>
-            <Button x:Name="btnUltraviolet" Content="Ultraviolet"   VerticalAlignment="Top" HorizontalContentAlignment="Center" UseLayoutRounding="False" Background="Black"        Foreground="Black"          BorderThickness="0" FontSize="20" Padding="0" Margin="0" Click="btnUltraviolet_Click" Height="37"/>
+            <StackPanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="VerticalAlignment" Value="Top" />
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                    <Setter Property="UseLayoutRounding" Value="False" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="Margin" Value="0" />
+                    <Setter Property="Height" Value="40" />
+                    <Setter Property="Width" Value="300" />
+                    <Setter Property="FontSize" Value="20" />
+                </Style>
+            </StackPanel.Resources>
+            <Button x:Name="btnInfrared"    Content="Infrared"      Background="White"        Foreground="White"          Click="btnInfrared_Click"/>
+            <Button x:Name="btnRed"         Content="Red"           Background="Red"          Foreground="Red"            Click="btnRed_Click"/>
+            <Button x:Name="btnOrange"      Content="Orange"        Background="Orange"       Foreground="Orange"         Click="btnOrange_Click"/>
+            <Button x:Name="btnYellow"      Content="Yellow"        Background="Yellow"       Foreground="Yellow"         Click="btnYellow_Click"/>
+            <Button x:Name="btnGreen"       Content="Green"         Background="Green"        Foreground="Green"          Click="btnGreen_Click"/>
+            <Button x:Name="btnBlue"        Content="Blue"          Background="Blue"         Foreground="Blue"           Click="btnBlue_Click"/>
+            <Button x:Name="btnIndigo"      Content="Indigo"        Background="Indigo"       Foreground="Indigo"         Click="btnIndigo_Click"/>
+            <Button x:Name="btnPurple"      Content="Purple"        Background="MidnightBlue" Foreground="MidnightBlue"   Click="btnPurple_Click"/>
+            <Button x:Name="btnUltraviolet" Content="Ultraviolet"   Background="Black"        Foreground="Black"          Click="btnUltraviolet_Click"/>
         </StackPanel>
-        <StackPanel x:Name="spConfig" Visibility="Hidden" Panel.ZIndex="1" Background="Black">
-            <GroupBox x:Name="gbDisplay" Header="Display" Foreground="White" Margin="10,5,10,7" Padding="10">
+        <StackPanel x:Name="spConfig" Visibility="Collapsed" Panel.ZIndex="1">
+            <GroupBox x:Name="gbDisplay" Header="Display" Margin="10,5,10,7" Padding="10">
                 <StackPanel Orientation="Vertical">
-                    <CheckBox x:Name="cbRetro" Foreground="White" IsChecked="True" Background="Black" Margin="0,0,0,8" ToolTip="Toggle the retro look.">Enable CRT scanline animation</CheckBox>
+                    <CheckBox x:Name="cbRetro" IsChecked="True" Margin="0,0,0,8" ToolTip="Toggle the retro look.">Enable CRT scanline animation</CheckBox>
                     <StackPanel Orientation="Horizontal">
-                        <Label Foreground="White" Padding="0,5,5,5" Margin="0,0,5,0" ToolTip="Scale eye size percentage.">Eye Size % :</Label>
-                        <Slider x:Name="sdScaleEye" Orientation="Horizontal" Value="100" Minimum="50" Maximum="150" SmallChange="10" LargeChange="10" Background="Black" Foreground="White" AutoToolTipPlacement="BottomRight" Margin="10,0,0,0" ToolTip="Scale eye size percentage." HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" MinWidth="170"  />
+                        <Label Padding="0,5,5,5" Margin="0,0,5,0" ToolTip="Scale eye size percentage.">Eye Size % :</Label>
+                        <Slider x:Name="sdScaleEye" Orientation="Horizontal" Value="100" Minimum="50" Maximum="150" SmallChange="10" LargeChange="10" AutoToolTipPlacement="BottomRight" Margin="10,0,0,0" ToolTip="Scale eye size percentage." HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" MinWidth="170"  />
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
-            <GroupBox x:Name="gbPath" Header="Path" Foreground="White" Margin="10,0,10,7" Padding="10">
+            <GroupBox x:Name="gbPath" Header="Path" Margin="10,0,10,7" Padding="10">
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Visibility="Visible" Width="70">
-                        <RadioButton x:Name="rbStill"    GroupName="rbgPath" Margin="0,0,0,8" Foreground="White" Background="Black" ToolTip="Eye will not movement much but still dilates.">Minimal</RadioButton>
-                        <RadioButton x:Name="rbRandom"   GroupName="rbgPath" Margin="0,0,0,8" Foreground="White" Background="Black" ToolTip="Eye path is random.">Random</RadioButton>
-                        <RadioButton x:Name="rbScripted" GroupName="rbgPath" Margin="0,0,0,8" Foreground="White" Background="Black" ToolTip="Use the scripted path for eye movement." IsChecked="True">Scripted</RadioButton>
-                        <RadioButton x:Name="rbCustom"   GroupName="rbgPath"                  Foreground="White" Background="Black" ToolTip="Use your custom path for eye movement." Unchecked="toggleCustomDisplay" Checked="toggleCustomDisplay" IsEnabled="False">Custom</RadioButton>
+                        <RadioButton x:Name="rbStill"    GroupName="rbgPath" Margin="0,0,0,8" ToolTip="Eye will not movement much but still dilates.">Minimal</RadioButton>
+                        <RadioButton x:Name="rbRandom"   GroupName="rbgPath" Margin="0,0,0,8" ToolTip="Eye path is random.">Random</RadioButton>
+                        <RadioButton x:Name="rbScripted" GroupName="rbgPath" Margin="0,0,0,8" ToolTip="Use the scripted path for eye movement." IsChecked="True">Scripted</RadioButton>
+                        <RadioButton x:Name="rbCustom"   GroupName="rbgPath"                  ToolTip="Use your custom path for eye movement." Unchecked="toggleCustomDisplay" Checked="toggleCustomDisplay" IsEnabled="False">Custom</RadioButton>
                     </StackPanel>
                     <StackPanel Width="170" Visibility="Hidden">
                         <TextBox x:Name="txtCustomPath" AcceptsReturn="True" AcceptsTab="True" TextWrapping="WrapWithOverflow" VerticalScrollBarVisibility="Visible" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ToolTip="Custom path JSON data." Height="50"/>
@@ -42,36 +55,36 @@
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
-            <GroupBox x:Name="gbVoice" Header="Voice" Foreground="White" Margin="10,0,10,7" Padding="10">
+            <GroupBox x:Name="gbVoice" Header="Voice" Margin="10,0,10,7" Padding="10">
                 <StackPanel Orientation="Vertical">
-                    <CheckBox x:Name="cbTalk" IsChecked="True" Margin="0,0,0,8" Foreground="White" Background="Black" ToolTip="Toggle speaking funciton." Click="cbTalk_Click">Enable the Computer's voice</CheckBox>
-                    <CheckBox x:Name="cbDefault" IsChecked="True" IsEnabled="False" Background="Black" Margin="0,0,0,8">Use default voice</CheckBox>
+                    <CheckBox x:Name="cbTalk" IsChecked="True" Margin="0,0,0,8" ToolTip="Toggle speaking funciton." Click="cbTalk_Click">Enable the Computer's voice</CheckBox>
+                    <CheckBox x:Name="cbDefault" IsChecked="True" IsEnabled="False" Margin="0,0,0,8">Use default voice</CheckBox>
                     <StackPanel Orientation="Horizontal">
-                        <Label Foreground="White" Padding="0,5,5,5" Margin="0,0,10,0" ToolTip="Speech frequency in seconds.">Frequency :</Label>
-                        <Slider x:Name="sdFrequency" Orientation="Horizontal" Value="60" Minimum="30" Maximum="600" SmallChange="10" LargeChange="30" Background="Black" Foreground="White" AutoToolTipPlacement="BottomRight" Margin="0" ToolTip="Speech frequency in seconds." HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" MinWidth="170"  />
+                        <Label Padding="0,5,5,5" Margin="0,0,10,0" ToolTip="Speech frequency in seconds.">Frequency :</Label>
+                        <Slider x:Name="sdFrequency" Orientation="Horizontal" Value="60" Minimum="30" Maximum="600" SmallChange="10" LargeChange="30" AutoToolTipPlacement="BottomRight" Margin="0" ToolTip="Speech frequency in seconds." HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" MinWidth="170"  />
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
         </StackPanel>
-        <StackPanel x:Name="spConfig2" Visibility="Hidden" Panel.ZIndex="2" Background="Black">
+        <StackPanel x:Name="spConfig2" Visibility="Collapsed" Panel.ZIndex="2">
             <GroupBox x:Name="gbEditPath" Header="Edit Custom Path" Foreground="White" Margin="10,5,10,5" Padding="10" Height="315">
                 <StackPanel>
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                            <Label Foreground="White" Padding="0" Margin="0,0,10,0" ToolTip="Change in X position." Width="55">Delta X :</Label>
+                            <Label Padding="0" Margin="0,0,10,0" ToolTip="Change in X position." Width="55">Delta X :</Label>
                             <TextBox x:Name="deltax" ToolTip="Change in X position." Width="50"></TextBox>
                             <Button x:Name="btnSave" Width="50" Margin="80,0,0,0">Add</Button>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                            <Label Foreground="White" Padding="0" Margin="0,0,10,0" ToolTip="Change in Y position." Width="55">Delta Y :</Label>
+                            <Label Padding="0" Margin="0,0,10,0" ToolTip="Change in Y position." Width="55">Delta Y :</Label>
                             <TextBox x:Name="deltay" ToolTip="Change in Y position." Width="50"></TextBox>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                            <Label Foreground="White" Padding="0" Margin="0,0,10,0" ToolTip="How long it takes to make the move in milliseconds." Width="55">Duration :</Label>
+                            <Label Padding="0" Margin="0,0,10,0" ToolTip="How long it takes to make the move in milliseconds." Width="55">Duration :</Label>
                             <TextBox x:Name="duration" ToolTip="How long it takes to make the move in milliseconds." Width="50">99999</TextBox>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                            <Label Foreground="White" Padding="0" Margin="0,0,10,0" ToolTip="Set movement speech." Width="55">Speak :</Label>
+                            <Label Padding="0" Margin="0,0,10,0" ToolTip="Set movement speech." Width="55">Speak :</Label>
                             <ComboBox x:Name="speak" Width="180">
                                 <ComboBoxItem Content="Nothing"></ComboBoxItem>
                                 <ComboBoxItem Content="Random"></ComboBoxItem>

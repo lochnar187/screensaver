@@ -73,6 +73,7 @@ namespace Paranoia {
             if (boolAllowTalking) {
                 sayThis("Ultraviolet clearance, at your service.");
             } // End if (boolAllowTalking)
+            spAll.Visibility = Visibility.Collapsed;
             spConfig.Visibility = Visibility.Visible;
         } // End private void btnUltraviolet_Click(object sender, RoutedEventArgs e) 
 

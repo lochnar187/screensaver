@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:Paranoia"
              Startup="AppStart">
     <Application.Resources>
-
+        
     </Application.Resources>
 </Application>

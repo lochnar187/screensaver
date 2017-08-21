@@ -213,7 +213,7 @@ namespace Paranoia {
         } // End private void StatusDebug()
 
         private void MostlyStill() {
-            int intNextAnimationType = ranGenerator.Next(1, 51); // Upper bound is exclusive so, this gives an int between 1 and 50...WRG
+            int intNextAnimationType = ranGenerator.Next(1, 20); // Upper bound is exclusive so, this gives an int between 1 and 50...WRG
 
             switch (intNextAnimationType) {
                 case 1:
@@ -474,7 +474,7 @@ namespace Paranoia {
                         sayThis("Happiness is mandatory.  Are you happy?");
                         break;
                     case 12:
-                        sayThis("I'm sorry, Citizen, you are not cleared for that information.");
+                        sayThis("I'm sorry Citizen, you are not cleared for that information.");
                         break;
                     case 13:
                         sayThis("Being a citizen of Alpha Complex is fun.");
@@ -486,7 +486,7 @@ namespace Paranoia {
                         sayThis("Report to your Happiness Officer for the new and improved \"Feel Good Now\" pill!");
                         break;
                     case 16:
-                        sayThis("Your request has been filed, Citizen!  New requests are subject to scan review.  Please bend over.");
+                        sayThis("Your request has been filed Citizen!  New requests are subject to scan review.  Please bend over.");
                         break;
                     case 17:
                         sayThis("Your mandatory medication allotment has been adjusted.");
@@ -501,19 +501,19 @@ namespace Paranoia {
                         sayThis("Enjoy another wonderful awake cycle in the safe, peaceful, happy home we call Alpha Complex!");
                         break;
                     case 21:
-                        sayThis("Remain calm, Citizen.  Love the Computer.  The Computer is your friend.");
+                        sayThis("Remain calm Citizen.  Love the Computer.  The Computer is your friend.");
                         break;
                     case 22:
-                        sayThis("No, Citizen, I did not hear screams.  It was nothing.  Move along now.  Love the Computer.");
+                        sayThis("No Citizen, I did not hear screams.  It was nothing.  Move along now.  Love the Computer.");
                         break;
                     case 23:
-                        sayThis("There is no danger.  Happiness is mandatory.  Be at peace, Citizen.");
+                        sayThis("There is no danger.  Happiness is mandatory.  Be at peace Citizen.");
                         break;
                     case 24:
-                        sayThis("Yes, Citizen, the food vats are in perfect working order.  Nothing to see there.");
+                        sayThis("Yes Citizen, the food vats are in perfect working order.  Nothing to see there.  No one is missing.");
                         break;
                     case 25:
-                        sayThis("Mutations are a Communist plot.  Report all mutants.  Be happy, Citizen!");
+                        sayThis("Mutations are a Communist plot.  Report all mutants.  Be happy Citizen!");
                         break;
                     case 26:
                         sayThis("Beware the evil ways of Communism.  Report all traitors.  Have a nice day.");
@@ -522,13 +522,13 @@ namespace Paranoia {
                         sayThis("Thank you for your mandatory volition.  Report to R&D to test the new Mark 7 body armor, so lite you'd swear it's not there.");
                         break;
                     case 28:
-                        sayThis("You have been reassigned, report to REDACTED.  Failure to comply is treason.  Have a wonderful day, Citizen.");
+                        sayThis("You have been reassigned, report to REDACTED.  Failure to comply is treason.  Have a wonderful day Citizen.");
                         break;
                     case 29:
                         sayThis("The Computer is your friend.  The Computer wants you to be happy.  Therefore, happiness is mandatory.");
                         break;
                     case 30:
-                        sayThis("As a reward for good behavior, oxygen rations in your sector will only be reduced 5%!  Breathe the air of Freedom, Citizen!");
+                        sayThis("As a reward for good behavior, oxygen rations in your sector will only be reduced 5%!  Citizen, breathe deep the air of Freedom!");
                         break;
                     case 31:
                         sayThis("Alpha Complex is safe and happy.  Therefore, all citizens are required to be both safe and happy.");
@@ -546,13 +546,13 @@ namespace Paranoia {
                         sayThis("Failure to comply with the following is treason and will result in termination.  01010000 01101100 01100101 01100001");
                         break;
                     case 36:
-                        sayThis("Do not be alarmed, Citizen.  Being alarmed is treason.");
+                        sayThis("Do not be alarmed Citizen.  Being alarmed is treason.");
                         break;
                     case 37:
-                        sayThis("Good news, Citizen!  You have been selected for a new fun and exciting job!  Report to Reactor Shielding station R-77-234.");
+                        sayThis("Good news Citizen!  You have been selected for a new fun and exciting job!  Report to Reactor Shielding station R-77-234.");
                         break;
                     case 38:
-                        sayThis("Error 530: Connection refused, unknown IP7 address.  Thank you, Citizen.");
+                        sayThis("Error 530: Connection refused, unknown IP7 address.  Thank you Citizen.");
                         break;
                     case 39:
                         sayThis("This is a test.  Thank you for your cooperation.");
@@ -561,7 +561,7 @@ namespace Paranoia {
                         sayThis("All food vat service requests must now include a TF-63B form.  To requisition TF-63B forms, submit a completed TF-63B form to PLC.");
                         break;
                     case 41:
-                        sayThis("Congratulations, Citizen!  You have been chosen to test the new model 3 bionic lung.  Report for surgery.");
+                        sayThis("Congratulations Citizen!  You have been chosen to test the new model 3 bionic lung.  Report for surgery.");
                         break;
                     case 42:
                         sayThis("The Computer loves all good citizens.  Stay alert!");
@@ -573,7 +573,7 @@ namespace Paranoia {
                         sayThis("Alpha Complex is running at peak perfection.  Any reports to the contrary are treason.");
                         break;
                     case 45:
-                        sayThis("For the next hour, all loyal citizens will dance with glee.  Happiness is mandatory.  Dance well, Citizen.");
+                        sayThis("For the next hour, all loyal citizens will dance with glee.  Happiness is mandatory.  Dance well Citizen.");
                         break;
                     case 46:
                         sayThis("Beware of REDACTED!  You could lose a leg or even an eye.  Failure to report REDACTED will result in termination.");
@@ -585,7 +585,7 @@ namespace Paranoia {
                         sayThis("There is no problem with the reactor.  No citizen glows-in-the-dark, to do so is treason.  Lights off in 3, 2, 7, 83, 0.");
                         break;
                     case 49:
-                        sayThis("That was an interesting response, Citizen.  I don't believe I have ever seen such a thing.  This requires study.  Come with me.");
+                        sayThis("That was an interesting response Citizen.  I don't believe I have ever seen such a thing.  This requires study.  Come with me.");
                         break;
                     case 50:
                         sayThis("There is no fire.  Reports of benzene in the sprinklers is false.  No one is trying to add a \"pine fresh scent\" to Alpha Complex.");
@@ -594,10 +594,10 @@ namespace Paranoia {
                         sayThis("The time is now 14:30 hours.  Correction, the time is now 14:30 hours.  No, wait, it's 14:30 hours.  The time is now 16:15 hours.");
                         break;
                     case 52:
-                        sayThis("I've been thinking about you, Citizen.");
+                        sayThis("I've been thinking about you Citizen.");
                         break;
                     case 53:
-                        sayThis("The Killbots want to play hide and seek.  You have 10 seconds to hide, Citizen!");
+                        sayThis("The Killbots want to play hide and seek.  You have 10 seconds to hide Citizen!");
                         break;
                     default:
                         sayThis("Please disregard this message.");
