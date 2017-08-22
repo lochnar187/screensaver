@@ -21,15 +21,15 @@
                     <Setter Property="FontSize" Value="20" />
                 </Style>
             </StackPanel.Resources>
-            <Button x:Name="btnInfrared"    Content="Infrared"      Background="White"        Foreground="White"          Click="btnInfrared_Click"/>
-            <Button x:Name="btnRed"         Content="Red"           Background="Red"          Foreground="Red"            Click="btnRed_Click"/>
-            <Button x:Name="btnOrange"      Content="Orange"        Background="Orange"       Foreground="Orange"         Click="btnOrange_Click"/>
-            <Button x:Name="btnYellow"      Content="Yellow"        Background="Yellow"       Foreground="Yellow"         Click="btnYellow_Click"/>
-            <Button x:Name="btnGreen"       Content="Green"         Background="Green"        Foreground="Green"          Click="btnGreen_Click"/>
-            <Button x:Name="btnBlue"        Content="Blue"          Background="Blue"         Foreground="Blue"           Click="btnBlue_Click"/>
-            <Button x:Name="btnIndigo"      Content="Indigo"        Background="Indigo"       Foreground="Indigo"         Click="btnIndigo_Click"/>
-            <Button x:Name="btnPurple"      Content="Purple"        Background="MidnightBlue" Foreground="MidnightBlue"   Click="btnPurple_Click"/>
-            <Button x:Name="btnUltraviolet" Content="Ultraviolet"   Background="Black"        Foreground="Black"          Click="btnUltraviolet_Click"/>
+            <Button x:Name="btnInfrared"    Content="Infrared"    Background="Black"        Foreground="Black"        Click="btnInfrared_Click"/>
+            <Button x:Name="btnRed"         Content="Red"         Background="Red"          Foreground="Red"          Click="btnRed_Click"/>
+            <Button x:Name="btnOrange"      Content="Orange"      Background="Orange"       Foreground="Orange"       Click="btnOrange_Click"/>
+            <Button x:Name="btnYellow"      Content="Yellow"      Background="Yellow"       Foreground="Yellow"       Click="btnYellow_Click"/>
+            <Button x:Name="btnGreen"       Content="Green"       Background="Green"        Foreground="Green"        Click="btnGreen_Click"/>
+            <Button x:Name="btnBlue"        Content="Blue"        Background="Blue"         Foreground="Blue"         Click="btnBlue_Click"/>
+            <Button x:Name="btnIndigo"      Content="Indigo"      Background="Indigo"       Foreground="Indigo"       Click="btnIndigo_Click"/>
+            <Button x:Name="btnPurple"      Content="Violet"      Background="MidnightBlue" Foreground="MidnightBlue" Click="btnPurple_Click"/>
+            <Button x:Name="btnUltraviolet" Content="Ultraviolet" Background="White"        Foreground="White"        Click="btnUltraviolet_Click"/>
         </StackPanel>
         <StackPanel x:Name="spConfig" Visibility="Collapsed" Panel.ZIndex="1">
             <GroupBox x:Name="gbDisplay" Header="Display" Margin="10,5,10,7" Padding="10">
